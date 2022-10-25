@@ -8,6 +8,6 @@ package fi.tuni.comp_se_110.weatherapp;
  *
  * @author meruusunen
  */
-public class combinedModel {
+public class CombinedModel {
     
 }

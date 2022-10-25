@@ -1,11 +1,10 @@
+package fi.tuni.comp_se_110.weatherapp;
 
-package com.mycompany.testi;
 
 /**
  *
  * @author Matti
  */
-import javax.xml.parsers.SAXParser;
 
 import java.time.LocalDateTime;
 import java.time.DayOfWeek;

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="665.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.RootController">
+  <tabs>
+    <Tab text="Weather">
+         <content>
+            <AnchorPane fx:id="weatherAnchorPane" prefHeight="200.0" prefWidth="200.0">
+                <children>
+               </children>
+            </AnchorPane>
+         </content></Tab>
+    <Tab text="Road info">
+         <content>
+            <AnchorPane fx:id="roadAnchorPane" prefHeight="200.0" prefWidth="200.0">
+                <children>
+               </children>
+            </AnchorPane>
+         </content></Tab>
+      <Tab text="Combined">
+         <content>
+            <AnchorPane fx:id="combinedAnchorPane" prefHeight="200.0" prefWidth="200.0">
+                <children>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+      <Tab text="Settings">
+         <content>
+            <AnchorPane fx:id="settingsAnchorPane" prefHeight="200.0" prefWidth="200.0">
+               <children>
+               </children></AnchorPane>
+         </content>
+      </Tab>
+  </tabs>
+</TabPane>
