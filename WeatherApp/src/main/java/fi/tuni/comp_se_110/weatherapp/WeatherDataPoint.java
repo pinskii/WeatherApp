@@ -1,4 +1,11 @@
 package fi.tuni.comp_se_110.weatherapp;
+
+
+/**
+ *
+ * @author Matti
+ */
+
 import java.time.LocalDateTime;
 import java.time.DayOfWeek;
 

@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 
-public class weatherController {
+public class WeatherController {
     @FXML
     private TextField locationTextField;
     private DatePicker sctDayDatePicker;
