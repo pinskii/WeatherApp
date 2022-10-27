@@ -17,9 +17,9 @@ import org.xml.sax.InputSource;
 
 public class fmiApi {
     private static LocalDateTime date= null;
-    private static String windSpeedMS=null;
-    private static String temperature=null;
-    private static String totalCloudCover=null;
+    private static String windSpeedMS="NaN";
+    private static String temperature="NaN";
+    private static String totalCloudCover="NaN";
     private static ArrayList<WeatherDataPoint> returnData = new ArrayList<WeatherDataPoint>(){};
     static String baseUrl = "http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=";
     
@@ -96,21 +96,25 @@ public class fmiApi {
                 date = formatDateStringToLocalDateTime(split[2].substring(0, split[2].length()-1));
                 if(parameterType.equals("WindSpeedMS")){
                     windSpeedMS = value;
-                    break;
                 }     
                 else if(parameterType.equals("Temperature")){
                     temperature = value;
-                    break;
                 }
                 else if(parameterType.equals("TotalCloudCover")){
                     totalCloudCover = value;
-                    break;
+
                 }
                 
                 if(counter == 3){
                     counter = 0;
-                    WeatherDataPoint point = new WeatherDataPoint(totalCloudCover, temperature, windSpeedMS, date);
-                    returnData.add(point);
+                    if(!totalCloudCover.equals("NaN") && !temperature.equals("NaN") && !windSpeedMS.equals("NaN")){
+                        WeatherDataPoint point = new WeatherDataPoint(totalCloudCover, temperature, windSpeedMS, date);
+                        returnData.add(point);
+                    }
+                    totalCloudCover = "NaN";
+                    temperature = "NaN";
+                    windSpeedMS= "NaN";
+                    
                     System.out.println("pushed");
                 } 
                 System.out.println("2: "+ split[2]);
