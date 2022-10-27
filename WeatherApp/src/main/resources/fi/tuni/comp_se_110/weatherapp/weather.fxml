@@ -9,22 +9,26 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="fi.tuni.comp_se_110.weatherapp.WeatherController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.WeatherController">
     <children>
-        <RadioButton layoutX="14.0" layoutY="185.0" mnemonicParsing="false" text="temperature">
+        <RadioButton fx:id="temperatureRadioButton" layoutX="14.0" layoutY="185.0" mnemonicParsing="false" text="temperature">
            <toggleGroup>
               <ToggleGroup fx:id="graph" />
            </toggleGroup>
+         <font>
+            <Font name="Arial" size="13.0" />
+         </font>
         </RadioButton>
-        <RadioButton layoutX="14.0" layoutY="215.0" mnemonicParsing="false" text="wind" toggleGroup="$graph" />
-        <RadioButton layoutX="14.0" layoutY="245.0" mnemonicParsing="false" text="cloudiness" toggleGroup="$graph" />
+        <RadioButton fx:id="windRadioButton" layoutX="14.0" layoutY="215.0" mnemonicParsing="false" text="wind" toggleGroup="$graph" />
+        <RadioButton fx:id="cloudinessRadioButton" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" text="cloudiness" toggleGroup="$graph" />
         <RadioButton layoutX="14.0" layoutY="275.0" mnemonicParsing="false" text="rain" toggleGroup="$graph" />
-        <RadioButton layoutX="14.0" layoutY="305.0" mnemonicParsing="false" text="daily min and max" toggleGroup="$graph" />
-        <RadioButton layoutX="14.0" layoutY="335.0" mnemonicParsing="false" text="daily average" toggleGroup="$graph" />
-        <DatePicker layoutX="14.0" layoutY="93.0" />
-        <TextField layoutX="14.0" layoutY="40.0" />
-        <TableView layoutX="247.0" layoutY="51.0" prefHeight="137.0" prefWidth="376.0">
+        <RadioButton fx:id="dailyMinMaxRadioButton" layoutX="14.0" layoutY="305.0" mnemonicParsing="false" text="daily min and max" toggleGroup="$graph" />
+        <RadioButton fx:id="dailyAverageRadioButton" layoutX="14.0" layoutY="335.0" mnemonicParsing="false" text="daily average" toggleGroup="$graph" />
+        <DatePicker fx:id="sctDayDatePicker" layoutX="14.0" layoutY="93.0" />
+        <TextField fx:id="locationTextField" layoutX="14.0" layoutY="40.0" />
+        <TableView fx:id="forecastTable" layoutX="247.0" layoutY="51.0" prefHeight="137.0" prefWidth="376.0">
           <columns>
             <TableColumn prefWidth="47.0" text="mon" />
             <TableColumn prefWidth="48.0" text="tue" />
@@ -39,5 +43,6 @@
         <Button layoutX="539.0" layoutY="8.0" mnemonicParsing="false" text="Save preferneces" />
         <Label layoutX="14.0" layoutY="21.0" text="Location:" />
         <Label layoutX="14.0" layoutY="76.0" text="Select date:" />
+      <AnchorPane fx:id="tempChart" layoutX="247.0" layoutY="194.0" prefHeight="197.0" prefWidth="376.0" />
      </children>
 </AnchorPane>
