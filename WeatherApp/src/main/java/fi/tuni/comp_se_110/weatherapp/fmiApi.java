@@ -94,20 +94,19 @@ public class fmiApi {
                 String parameterType = split[3];
                 String value = split[4];
                 date = formatDateStringToLocalDateTime(split[2].substring(0, split[2].length()-1));
-                switch(parameterType){
-                    case "WindSpeedMS" ->{
-                       windSpeedMS = value;
-                       break;
-                    }                      
-                    case "Temperature"->{
-                        temperature = value;
-                        break;
-                    }  
-                    case "TotalCloudCover"->{
-                        totalCloudCover= value;
-                        break;
-                    }        
+                if(parameterType.equals("WindSpeedMS")){
+                    windSpeedMS = value;
+                    break;
+                }     
+                else if(parameterType.equals("Temperature")){
+                    temperature = value;
+                    break;
                 }
+                else if(parameterType.equals("TotalCloudCover")){
+                    totalCloudCover = value;
+                    break;
+                }
+                
                 if(counter == 3){
                     counter = 0;
                     WeatherDataPoint point = new WeatherDataPoint(totalCloudCover, temperature, windSpeedMS, date);
