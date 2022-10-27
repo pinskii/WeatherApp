@@ -13,7 +13,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.WeatherController">
     <children>
-        <RadioButton fx:id="temperatureRadioButton" layoutX="14.0" layoutY="185.0" mnemonicParsing="false" text="temperature">
+        <RadioButton fx:id="temperatureRadioButton" layoutX="14.0" layoutY="185.0" mnemonicParsing="false" text="temperature" onAction="#setGraphContent">
            <toggleGroup>
               <ToggleGroup fx:id="graph" />
            </toggleGroup>
@@ -21,11 +21,11 @@
             <Font name="Arial" size="13.0" />
          </font>
         </RadioButton>
-        <RadioButton fx:id="windRadioButton" layoutX="14.0" layoutY="215.0" mnemonicParsing="false" text="wind" toggleGroup="$graph" />
-        <RadioButton fx:id="cloudinessRadioButton" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" text="cloudiness" toggleGroup="$graph" />
-        <RadioButton layoutX="14.0" layoutY="275.0" mnemonicParsing="false" text="rain" toggleGroup="$graph" />
-        <RadioButton fx:id="dailyMinMaxRadioButton" layoutX="14.0" layoutY="305.0" mnemonicParsing="false" text="daily min and max" toggleGroup="$graph" />
-        <RadioButton fx:id="dailyAverageRadioButton" layoutX="14.0" layoutY="335.0" mnemonicParsing="false" text="daily average" toggleGroup="$graph" />
+        <RadioButton fx:id="windRadioButton" layoutX="14.0" layoutY="215.0" mnemonicParsing="false" text="wind" toggleGroup="$graph" onAction="#setGraphContent"/>
+        <RadioButton fx:id="cloudinessRadioButton" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" text="cloudiness" toggleGroup="$graph" onAction="#setGraphContent" />
+        <RadioButton layoutX="14.0" layoutY="275.0" mnemonicParsing="false" text="rain" toggleGroup="$graph" onAction="#setGraphContent"/>
+        <RadioButton fx:id="dailyMinMaxRadioButton" layoutX="14.0" layoutY="305.0" mnemonicParsing="false" text="daily min and max" toggleGroup="$graph" onAction="#setGraphContent"/>
+        <RadioButton fx:id="dailyAverageRadioButton" layoutX="14.0" layoutY="335.0" mnemonicParsing="false" text="daily average" toggleGroup="$graph" onAction="#setGraphContent"/>
         <DatePicker fx:id="sctDayDatePicker" layoutX="14.0" layoutY="93.0" />
         <TextField fx:id="locationTextField" layoutX="14.0" layoutY="40.0" />
         <TableView fx:id="forecastTable" layoutX="247.0" layoutY="51.0" prefHeight="137.0" prefWidth="376.0">

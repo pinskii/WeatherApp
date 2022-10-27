@@ -53,7 +53,7 @@ public class WeatherModel {
             clouds.add(Float.parseFloat(data.get(i).getTotalCloudCover()));
         }       
         
-        if(radioButtonSelection.equals("temperatureRadioButton")) {
+        if(radioButtonSelection.equals("temperature")) {
             XYChart.Series series = new XYChart.Series();
             for(int j = 0 ; j < temps.size() ; j++) {
                 series.getData().add(new XYChart.Data(dates.get(j),temps.get(j)));
@@ -61,7 +61,7 @@ public class WeatherModel {
             lineChart.getData().add(series);
             yAxis.setLabel("temperature");
            
-        } else if (radioButtonSelection.equals("windRadioButton")) {
+        } else if (radioButtonSelection.equals("wind")) {
             XYChart.Series series = new XYChart.Series();
             
             for(int j = 0 ; j < winds.size() ; j++) {
@@ -70,7 +70,7 @@ public class WeatherModel {
             lineChart.getData().addAll(series);
             yAxis.setLabel("windspeed");
                         
-        } else if (radioButtonSelection.equals("cloudinessRadioButton")) {
+        } else if (radioButtonSelection.equals("cloudiness")) {
             XYChart.Series series = new XYChart.Series();
             
             for(int j = 0 ; j < clouds.size() ; j++) {
