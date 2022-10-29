@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="fi.tuni.comp_se_110.weatherapp.CombinedController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.CombinedController">
     <children>
         <RadioButton layoutX="14.0" layoutY="324.0" mnemonicParsing="false" text="weather &amp; road condition" />
         <Button layoutX="424.0" layoutY="8.0" mnemonicParsing="false" text="Get preferences" />
@@ -20,5 +20,7 @@
         <Label layoutX="14.0" layoutY="21.0" text="Coordinates" />
         <Label layoutX="14.0" layoutY="113.0" text="Or select location from list:" />
         <Label layoutX="14.0" layoutY="173.0" text="Time interval:" />
+      <AnchorPane fx:id="weatherChart" layoutX="226.0" layoutY="43.0" prefHeight="158.0" prefWidth="410.0" />
+      <AnchorPane fx:id="roadChart" layoutX="226.0" layoutY="216.0" prefHeight="158.0" prefWidth="410.0" />
      </children>
 </AnchorPane>
