@@ -43,6 +43,6 @@
         <Button layoutX="539.0" layoutY="8.0" mnemonicParsing="false" text="Save preferneces" />
         <Label layoutX="14.0" layoutY="21.0" text="Location:" />
         <Label layoutX="14.0" layoutY="76.0" text="Select date:" />
-      <AnchorPane fx:id="tempChart" layoutX="247.0" layoutY="194.0" prefHeight="197.0" prefWidth="376.0" />
+      <AnchorPane fx:id="tempChart" layoutX="247.0" layoutY="194.0" prefHeight="197.0" prefWidth="424.0" />
      </children>
 </AnchorPane>

@@ -14,14 +14,14 @@ public class WeatherDataPoint {
     private String temperature;
     private String windSpeedMS;
     private LocalDateTime dateTime;
-    
+   
     public WeatherDataPoint (){}
     
     public WeatherDataPoint(String totalCloudCover, String temperature, String windSpeedMS, LocalDateTime dateTime){
         this.totalCloudCover = totalCloudCover;
         this.temperature = temperature;
         this.windSpeedMS = windSpeedMS;
-        this.dateTime = dateTime;  
+        this.dateTime = dateTime;         
     }
     public String getTemperature(){
         return this.temperature;
