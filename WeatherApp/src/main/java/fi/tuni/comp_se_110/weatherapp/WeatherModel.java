@@ -1,5 +1,10 @@
 package fi.tuni.comp_se_110.weatherapp;
 
+/**
+ * 
+ * @author Melina Ruusunen
+ */
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +18,7 @@ import javafx.scene.text.Font;
 public class WeatherModel {    
    
     private static ArrayList<WeatherDataPoint> datapoints = new ArrayList<>();
-    private static final ArrayList<WeatherDataPoint> data = new ArrayList<>();
+    private static ArrayList<WeatherDataPoint> data = new ArrayList<>();
 
     private static final ArrayList<Float> temps = new ArrayList<>();
     private static final ArrayList<Float> winds = new ArrayList<>();
@@ -27,6 +32,13 @@ public class WeatherModel {
     }
     
     public static LineChart drawGraph(String radioButtonSelection, String location, LocalDate date) throws Exception{
+        
+        temps.clear();
+        winds.clear();
+        clouds.clear();
+        dates.clear();
+        datapoints.clear();
+        data.clear();
         
         datapoints = fetchWeatherData(location, date);
         
