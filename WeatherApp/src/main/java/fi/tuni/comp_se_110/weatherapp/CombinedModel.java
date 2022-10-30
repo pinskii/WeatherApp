@@ -25,7 +25,7 @@ public class CombinedModel {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
     
     public static ArrayList<WeatherDataPoint> fetchWeatherData(String location, LocalDate date) throws Exception {
-        return fmiApi.getWeatherData(location, date);
+        return FmiApi.getWeatherData(location, date);
     }
         
     public static LineChart drawWeatherGraph(String location, LocalDate date) throws Exception{

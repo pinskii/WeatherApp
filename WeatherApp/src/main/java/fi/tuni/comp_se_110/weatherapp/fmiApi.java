@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-public class fmiApi {
+public class FmiApi {
     private static LocalDateTime date= null;
     private static String windSpeedMS="NaN";
     private static String temperature="NaN";
