@@ -24,28 +24,37 @@ public class FmiApi {
     static String baseUrl = "http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=";
     
     public static ArrayList<WeatherDataPoint> getWeatherData (String place, LocalDate starttime) throws Exception{
-        LocalDate endtime = starttime.plusDays(6);
-        LocalDate today = LocalDate.now();
+        LocalDateTime start = starttime.atStartOfDay();
+        LocalDateTime endtime = start.plusDays(2);
+        LocalDateTime today = LocalDateTime.now().minusHours(2);
         String forecastParams = "Temperature,WindSpeedMS,TotalCloudCover";
-        String starttimeFormatted = formatDate(starttime);
+        String starttimeFormatted = formatDate(start);
         String endtimeFormatted = formatDate(endtime);
         if(endtime.isBefore(today)){
             String[] options = {
             "place="+place,
             "starttime="+starttimeFormatted,
             "endtime="+endtimeFormatted,
-            "parameters=t2m,ws_10min,n_man"
+            "timestep="+60,
+            "parameters=Temperature,ws_10min,n_man"
             };
-            String observationData = weatherObservationHourlySimple(options);  
-        }else if(starttime.isBefore(today) && endtime.isAfter(today)){
+            String observationData = weatherObservationHourlySimple(options); 
+            Document document = loadXMLFromString(observationData);
+            parseObservationData(document);
+        }else if(start.isBefore(today) && endtime.isAfter(today)){
             String todayFormatted = formatDate(today);
+            System.out.println(todayFormatted);
+            System.out.println(endtimeFormatted);
             String[] observationOptions = {
                 "place="+place,
                 "starttime="+starttimeFormatted,
                 "endtime="+todayFormatted,
-                "parameters=Temperature,WindSpeedMS,TotalCloudCover"
+                "timestep="+60,
+                "parameters=Temperature,ws_10min,n_man"
             };
             String observationData = weatherObservationHourlySimple(observationOptions);
+            Document document = loadXMLFromString(observationData);
+            parseObservationData(document);
             String[] forecastOptions = {
                 "place="+place,
                 "starttime="+todayFormatted,
@@ -54,6 +63,8 @@ public class FmiApi {
                 "parameters=Temperature,WindSpeedMS,TotalCloudCover"
             };
             String forecastData = harmonieForecastSimple(forecastOptions);
+            document = loadXMLFromString(forecastData);
+            parseForecastData(document);
             System.out.println("keskellä");
         }else{
             String[] forecastOptions = {
@@ -72,8 +83,8 @@ public class FmiApi {
         return returnData;
     };
     
-    private static String formatDate(LocalDate date){
-        DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd'T00:00:00Z'");
+    private static String formatDate(LocalDateTime date){
+        DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
         return date.format(formatObj);
     }
     private static LocalDateTime formatDateStringToLocalDateTime(String date){
@@ -108,6 +119,55 @@ public class FmiApi {
                 if(counter == 3){
                     counter = 0;
                     if(!totalCloudCover.equals("NaN") && !temperature.equals("NaN") && !windSpeedMS.equals("NaN")){
+                        WeatherDataPoint point = new WeatherDataPoint(totalCloudCover, temperature, windSpeedMS, date);
+                        returnData.add(point);
+                    }
+                    totalCloudCover = "NaN";
+                    temperature = "NaN";
+                    windSpeedMS= "NaN";
+                    
+                    System.out.println("pushed");
+                } 
+                System.out.println("2: "+ split[2]);
+                System.out.println("3: "+ split[3]);
+                System.out.println("4: "+ split[4]);
+                counter++;
+            }
+    }
+    private static void parseObservationData (Document xmlData){
+        xmlData.normalize();
+            NodeList elements = xmlData.getElementsByTagName("BsWfs:BsWfsElement");
+            int counter = 0;
+            for(int i= 0; i < elements.getLength(); i++){
+                System.out.println("next");
+                System.out.println(elements.item(i).getNodeName());
+                String text = elements.item(i).getTextContent().trim();
+                text = text.replaceAll("\\s+"," ");
+                String[] split = text.split(" ");
+                String parameterType = split[3];
+                String value = split[4];
+                date = formatDateStringToLocalDateTime(split[2].substring(0, split[2].length()-1));
+                if(parameterType.equals("ws_10min")){
+                    windSpeedMS = value;
+                }     
+                else if(parameterType.equals("Temperature")){
+                    temperature = value;
+                }
+                else if(parameterType.equals("n_man")){
+                    if(value.equals("NaN")){
+                        totalCloudCover = value;
+                    }else{
+                        value = Double.toString(Double.parseDouble(value)*8);
+                        totalCloudCover = value;
+                    }
+                    
+                    
+
+                }
+                
+                if(counter == 3){
+                    counter = 0;
+                    if(!totalCloudCover.equals("NaN") && !temperature.equals("NaN")){
                         WeatherDataPoint point = new WeatherDataPoint(totalCloudCover, temperature, windSpeedMS, date);
                         returnData.add(point);
                     }
