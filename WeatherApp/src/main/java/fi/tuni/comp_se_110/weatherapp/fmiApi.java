@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.io.*;
+import java.time.Month;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,6 +24,22 @@ public class FmiApi {
     private static ArrayList<WeatherDataPoint> returnData = new ArrayList<WeatherDataPoint>(){};
     static String baseUrl = "http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=";
     
+    public static ArrayList<WeatherAverageTemperaturePoint> getMonthlyTemperature (String place, LocalDate starttime)throws Exception{
+        LocalDateTime start = LocalDateTime.of(starttime.getYear(), starttime.getMonthValue(), 1, 0, 0);
+        LocalDateTime end = start.plusMonths(1).minusDays(1).plusHours(20);
+        String endFormatted = formatDate(end);
+        String starttimeFormatted = formatDate(start);
+        String[] options = {
+            "place="+place,
+            "starttime="+starttimeFormatted,
+            "endtime="+endFormatted,
+            "timestep="+60*4,
+            "parameters=Temperature"
+        };
+        String observationData = weatherObservationHourlySimple(options);
+        Document document = loadXMLFromString(observationData);
+        return parseObesrvationDataTemperatures(document);
+    }
     public static ArrayList<WeatherDataPoint> getWeatherData (String place, LocalDate starttime) throws Exception{
         LocalDateTime start = starttime.atStartOfDay();
         LocalDateTime endtime = start.plusDays(2);
@@ -133,6 +150,25 @@ public class FmiApi {
                 System.out.println("4: "+ split[4]);
                 counter++;
             }
+    }
+    private static ArrayList<WeatherAverageTemperaturePoint> parseObesrvationDataTemperatures (Document xmlData){
+        ArrayList<WeatherAverageTemperaturePoint> returnTemperatureData = new ArrayList<>();
+        xmlData.normalize();
+        NodeList elements = xmlData.getElementsByTagName("BsWfs:BsWfsElement");
+        for(int i = 0; i < elements.getLength(); i++){
+            String text = elements.item(i).getTextContent().trim();
+            text = text.replaceAll("\\s+"," ");
+            String[] split = text.split(" ");
+            String value = split[4];
+            LocalDateTime dateTemperature = formatDateStringToLocalDateTime(split[2].substring(0, split[2].length()-1));
+            WeatherAverageTemperaturePoint point = new WeatherAverageTemperaturePoint(value, dateTemperature);
+            returnTemperatureData.add(point);
+        }
+        for(WeatherAverageTemperaturePoint point : returnTemperatureData){
+            System.out.println("date: "+ point.getDate());
+            System.out.println("Temperature: "+ point.getTemperature());
+        }
+        return returnTemperatureData;
     }
     private static void parseObservationData (Document xmlData){
         xmlData.normalize();
