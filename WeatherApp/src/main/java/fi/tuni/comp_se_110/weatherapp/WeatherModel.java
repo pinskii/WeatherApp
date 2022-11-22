@@ -42,18 +42,22 @@ public class WeatherModel {
         
         datapoints = fetchWeatherData(location, date);
         
-        int hour = LocalDateTime.now().getHour();
+        int now_hour = LocalDateTime.now().getHour();
+        int now_date = LocalDateTime.now().getDayOfMonth();
         
-        for(int i = hour-1 ; i < datapoints.size() ; i++) {
-            data.add(datapoints.get(i));
+        for(int i = 0 ; i < datapoints.size() ; i++) {
+            int datapoint_hour = datapoints.get(i).getDateTime().getHour();
+            int datapoint_date = datapoints.get(i).getDateTime().getDayOfMonth();
+            
+            if (datapoint_hour >= now_hour || datapoint_date >= now_date) {
+                data.add(datapoints.get(i));
+            }
         }
         
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setLabel("time");
-        xAxis.setTickLabelFont(Font.font("Arial"));
         
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setTickLabelFont(Font.font("Arial"));
      
         LineChart lineChart = new LineChart(xAxis, yAxis);
         
@@ -90,7 +94,23 @@ public class WeatherModel {
             }
             lineChart.getData().addAll(series);
             yAxis.setLabel("cloudiness");
-        } 
+        } /*else if (radioButtonSelection.equals("daily min and max")) {
+            XYChart.Series series = new XYChart.Series();
+            
+            for(int j = 0 ; j < clouds.size() ; j++) {
+                series.getData().add(new XYChart.Data(dates.get(j),clouds.get(j)));
+            }
+            lineChart.getData().addAll(series);
+            yAxis.setLabel("cloudiness");
+        } else if (radioButtonSelection.equals("daily average")) {
+            XYChart.Series series = new XYChart.Series();
+            
+            for(int j = 0 ; j < clouds.size() ; j++) {
+                series.getData().add(new XYChart.Data(dates.get(j),clouds.get(j)));
+            }
+            lineChart.getData().addAll(series);
+            yAxis.setLabel("cloudiness");
+        } */
         
         lineChart.setMaxSize(424, 250);
         

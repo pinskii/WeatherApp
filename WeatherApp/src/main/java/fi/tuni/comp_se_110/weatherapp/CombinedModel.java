@@ -37,10 +37,16 @@ public class CombinedModel {
         
         datapoints = fetchWeatherData(location, date);
         
-        int hour = LocalDateTime.now().getHour();
+        int now_hour = LocalDateTime.now().getHour();
+        int now_date = LocalDateTime.now().getDayOfMonth();
         
-        for(int i = hour-1 ; i < datapoints.size() ; i++) {
-            data.add(datapoints.get(i));
+        for(int i = 0 ; i < datapoints.size() ; i++) {
+            int datapoint_hour = datapoints.get(i).getDateTime().getHour();
+            int datapoint_date = datapoints.get(i).getDateTime().getDayOfMonth();
+            
+            if (datapoint_hour >= now_hour || datapoint_date >= now_date) {
+                data.add(datapoints.get(i));
+            }
         }
         
         CategoryAxis xAxis = new CategoryAxis();
