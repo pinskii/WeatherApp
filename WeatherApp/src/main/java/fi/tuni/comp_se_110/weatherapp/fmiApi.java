@@ -6,9 +6,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.io.*;
-import java.time.Month;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,8 +25,8 @@ public class FmiApi {
     public static ArrayList<WeatherAverageTemperaturePoint> getMonthlyTemperature (String place, LocalDate starttime)throws Exception{
         LocalDateTime start = LocalDateTime.of(starttime.getYear(), starttime.getMonthValue(), 1, 0, 0);
         LocalDateTime end = start.plusMonths(1).minusDays(1).plusHours(20);
-        String endFormatted = formatDate(end);
-        String starttimeFormatted = formatDate(start);
+        String endFormatted = Utils.formatDate(end);
+        String starttimeFormatted = Utils.formatDate(start);
         String[] options = {
             "place="+place,
             "starttime="+starttimeFormatted,
@@ -45,8 +43,8 @@ public class FmiApi {
         LocalDateTime endtime = start.plusDays(2);
         LocalDateTime today = LocalDateTime.now().minusHours(2);
         String forecastParams = "Temperature,WindSpeedMS,TotalCloudCover";
-        String starttimeFormatted = formatDate(start);
-        String endtimeFormatted = formatDate(endtime);
+        String starttimeFormatted = Utils.formatDate(start);
+        String endtimeFormatted = Utils.formatDate(endtime);
         if(endtime.isBefore(today)){
             String[] options = {
             "place="+place,
@@ -59,7 +57,7 @@ public class FmiApi {
             Document document = loadXMLFromString(observationData);
             parseObservationData(document);
         }else if(start.isBefore(today) && endtime.isAfter(today)){
-            String todayFormatted = formatDate(today);
+            String todayFormatted = Utils.formatDate(today);
             System.out.println(todayFormatted);
             System.out.println(endtimeFormatted);
             String[] observationOptions = {
@@ -100,10 +98,7 @@ public class FmiApi {
         return returnData;
     };
     
-    private static String formatDate(LocalDateTime date){
-        DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        return date.format(formatObj);
-    }
+    
     private static LocalDateTime formatDateStringToLocalDateTime(String date){
         LocalDateTime parsed = LocalDateTime.parse(date);
         return parsed;
