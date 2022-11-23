@@ -31,9 +31,13 @@ public class WeatherDataPoint {
     }
     public String getWindSpeed(){
         return this.windSpeedMS;
-    }public String getTotalCloudCover(){
+    }
+    
+    public String getTotalCloudCover(){
         return this.totalCloudCover;
-    }public LocalDateTime getDateTime(){
+    }
+    
+    public LocalDateTime getDateTime(){
         return this.dateTime;
     }
     
