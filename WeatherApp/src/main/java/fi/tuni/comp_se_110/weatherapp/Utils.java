@@ -16,5 +16,4 @@ public class Utils {
         DateTimeFormatter formatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
         return date.format(formatObj);
     }
-
 }

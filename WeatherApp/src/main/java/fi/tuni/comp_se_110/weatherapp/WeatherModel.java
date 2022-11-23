@@ -67,7 +67,7 @@ public class WeatherModel {
         datapoints.clear();
         data.clear();
         
-        trolli = DigiTrafficApi.getRoadConditionsForecast(23, 61, 24, 62);
+        trolli = DigiTrafficApi.getRoadConditionsForecast(21, 61, 22, 62);
         
         
         for (Map.Entry<String, ArrayList<RoadConditionForecastPoint>> set :
