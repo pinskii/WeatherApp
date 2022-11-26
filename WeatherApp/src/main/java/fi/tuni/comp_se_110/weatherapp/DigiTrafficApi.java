@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Optional;
 /**
  *
  * @author Matti
@@ -55,15 +54,55 @@ public class DigiTrafficApi {
                     }
                 }
             }
-            System.out.println(returnData);
             return returnData;
         }
-        private static String roadMaintenanceTasks(ArrayList<String> options){
-            String uri = baseUrl + "/api/maintenance/v1/tracking/routes?";
+        public static Integer getTrafficMessageAmount(int x_min, int y_min, int x_max, int y_max){
+            String[] options = {
+                "inactiveHours=0",
+                "includeAreaGeometry=false",
+                "situationType=TRAFFIC_ANNOUNCEMENT",
+                "situationType=ROAD_WORK"
+            };
+            String data = trafficMessages(options);
+            JsonArray features = JsonParser.parseString(data).getAsJsonObject().get("features").getAsJsonArray();
+            int returnCount = 0;
+            for(int i = 0; i < features.size();i++){
+                
+                if(features.get(i).getAsJsonObject().get("geometry").isJsonNull()){
+                    continue;
+                }
+                JsonObject geometry = features.get(i).getAsJsonObject().get("geometry").getAsJsonObject();
+                JsonArray coords;
+                if(geometry.get("type").getAsString().toLowerCase().equalsIgnoreCase("point")){
+                    coords = geometry.get("coordinates").getAsJsonArray();
+                    double x = coords.get(0).getAsDouble();
+                    double y = coords.get(1).getAsDouble();
+                    if(x > x_min && x < x_max  && y > y_min && y < y_max){
+                        returnCount = returnCount + 1;
+                    }
+                }else{
+                    coords = geometry.getAsJsonObject().get("coordinates").getAsJsonArray().get(0).getAsJsonArray();
+                    for(int n = 0; n < coords.size(); n++){
+                    double x = coords.get(n).getAsJsonArray().get(0).getAsDouble();
+                    double y = coords.get(n).getAsJsonArray().get(1).getAsDouble();
+                    if(x > x_min && x < x_max  && y > y_min && y < y_max){
+                         returnCount = returnCount + 1;
+                         break;
+                     }
+                }
+                }
+                
+                
+            }
+            
+            return returnCount;
+        }
+        private static String trafficMessages(String[] options){
+            String url = "/api/traffic-message/v1/messages?";
+            String uri = baseUrl + url;
             for(String option : options){
                 uri = uri  + option + "&";
             }
-            System.out.println(uri);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
               .header("accept-encoding", "gzip")
@@ -74,13 +113,38 @@ public class DigiTrafficApi {
                 if(result.headers().firstValue("content-encoding").isEmpty()){
                     byte[] bytes = result.body().readAllBytes();
                     String returnData = new String(bytes,StandardCharsets.UTF_8);
-                    System.out.println("normal: "+returnData);
                     return returnData;
                 }else{
                     GZIPInputStream zipStream = new GZIPInputStream(result.body());
                     byte[] bytes = zipStream.readAllBytes();
                     String returnData = new String(bytes,StandardCharsets.UTF_8);
-                    System.out.println("gzipped: "+ returnData);
+                    return returnData;
+                }
+            }catch(Exception e){
+                System.out.println(e);
+                return "Error";
+            }
+        }
+        private static String roadMaintenanceTasks(ArrayList<String> options){
+            String uri = baseUrl + "/api/maintenance/v1/tracking/routes?";
+            for(String option : options){
+                uri = uri  + option + "&";
+            }
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+              .header("accept-encoding", "gzip")
+              .uri(URI.create(uri))
+              .build();
+            try {
+                HttpResponse<InputStream> result = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+                if(result.headers().firstValue("content-encoding").isEmpty()){
+                    byte[] bytes = result.body().readAllBytes();
+                    String returnData = new String(bytes,StandardCharsets.UTF_8);
+                    return returnData;
+                }else{
+                    GZIPInputStream zipStream = new GZIPInputStream(result.body());
+                    byte[] bytes = zipStream.readAllBytes();
+                    String returnData = new String(bytes,StandardCharsets.UTF_8);
                     return returnData;
                 }
             }catch(Exception e){
@@ -98,7 +162,6 @@ public class DigiTrafficApi {
             try {
                 HttpClient client = HttpClient.newHttpClient();
                 String returnData = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-                System.out.println("returnData: "+returnData);
                 if(JsonParser.parseString(returnData).getAsJsonObject().get("status").getAsInt() == 200){
                     return returnData;
                 }else{
