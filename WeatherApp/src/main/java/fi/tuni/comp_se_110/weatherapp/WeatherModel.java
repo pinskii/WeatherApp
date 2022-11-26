@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -26,8 +24,6 @@ public class WeatherModel {
     private static final ArrayList<Float> winds = new ArrayList<>();
     private static final ArrayList<Float> clouds = new ArrayList<>();
     private static final ArrayList<String> dates = new ArrayList<>();   
-    
-    private static HashMap<String, ArrayList<RoadConditionForecastPoint>> trolli = new HashMap<>();
     
     private static final DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd.MM");
@@ -66,20 +62,6 @@ public class WeatherModel {
         dates.clear();
         datapoints.clear();
         data.clear();
-        
-        trolli = DigiTrafficApi.getRoadConditionsForecast(21, 61, 22, 62);
-        
-        
-        for (Map.Entry<String, ArrayList<RoadConditionForecastPoint>> set :
-             trolli.entrySet()) {
- 
-            System.out.println(set.getKey());
-            
-            for(var auto : set.getValue()) {
-                System.out.println(auto.getOverallCondition() + " " + auto.getPrecipitation() + " " + auto.getSlipperiness());
-            }
-        
-        }
         
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
