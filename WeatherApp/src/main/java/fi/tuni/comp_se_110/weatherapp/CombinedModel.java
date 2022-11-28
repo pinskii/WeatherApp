@@ -1,13 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package fi.tuni.comp_se_110.weatherapp;
 
 /**
- *
- * @author meruusunen
+ * 
+ * @author Melina Ruusunen
  */
+
+import java.time.LocalDate;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
+
 public class CombinedModel {
     
+        
+    public static LineChart drawWeatherGraph(String location, LocalDate date) throws Exception{
+                              
+        return WeatherModel.drawGraph("temperature", location, date);
+    }
+    
+    public static BarChart drawMaintenanceGraph(LocalDate starttime, int xmin, int ymin, int xmax, int ymax) {
+        
+        return RoadConditionModel.drawBars(starttime, xmin, ymin, xmax, ymax);
+    }
+    
+    public static LineChart drawRoadConditionGraph(int xmin, int ymin, int xmax, int ymax, String id) {
+        
+        return RoadConditionModel.drawChart(xmin, ymin, xmax, ymax, id, "Overall road condition");
+    }
 }
