@@ -17,12 +17,12 @@ public class CombinedModel {
         return WeatherModel.drawGraph("temperature", location, date);
     }
     
-    public static BarChart drawMaintenanceGraph(LocalDate starttime, int xmin, int ymin, int xmax, int ymax) {
+    public static BarChart drawMaintenanceGraph(LocalDate starttime, double xmin, double ymin, double xmax, double ymax) {
         
         return RoadConditionModel.drawBars(starttime, xmin, ymin, xmax, ymax);
     }
     
-    public static LineChart drawRoadConditionGraph(int xmin, int ymin, int xmax, int ymax, String id) {
+    public static LineChart drawRoadConditionGraph(double xmin, double ymin, double xmax, double ymax, String id) {
         
         return RoadConditionModel.drawChart(xmin, ymin, xmax, ymax, id, "Overall road condition");
     }

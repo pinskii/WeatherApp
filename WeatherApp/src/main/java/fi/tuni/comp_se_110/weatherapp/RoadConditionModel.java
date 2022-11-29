@@ -20,15 +20,15 @@ public class RoadConditionModel {
     private static final ArrayList<String> overallCondition = new ArrayList<>();
     private static final ArrayList<String> time = new ArrayList<>();  
 
-    public static HashMap<String, ArrayList<RoadConditionForecastPoint>> fetchRoadConditionData(int xmin, int ymin, int xmax, int ymax) {
+    public static HashMap<String, ArrayList<RoadConditionForecastPoint>> fetchRoadConditionData(double xmin, double ymin, double xmax, double ymax) {
         return DigiTrafficApi.getRoadConditionsForecast(xmin, ymin, xmax, ymax);
     }
     
-    public static HashMap<String, Integer> fetchRoadMaintenanceData(LocalDate starttime, int xmin, int ymin, int xmax, int ymax) {
+    public static HashMap<String, Integer> fetchRoadMaintenanceData(LocalDate starttime, double xmin, double ymin, double xmax, double ymax) {
         return DigiTrafficApi.getRoadMaintenanceTasks(starttime, xmin, ymin, xmax, ymax);
     }
     
-    public static LineChart drawChart(int xmin, int ymin, int xmax, int ymax, String id, String info) {
+    public static LineChart drawChart(double xmin, double ymin, double xmax, double ymax, String id, String info) {
         
         precipitation.clear();
         slipperiness.clear();
@@ -88,21 +88,21 @@ public class RoadConditionModel {
         return lineChart;   
     }
     
-    public static BarChart drawBars(LocalDate starttime, int xmin, int ymin, int xmax, int ymax) {
+    public static BarChart drawBars(LocalDate starttime, double xmin, double ymin, double xmax, double ymax) {
         
         roadMaintenanceData.clear();
         
         roadMaintenanceData = fetchRoadMaintenanceData(starttime, xmin, ymin, xmax, ymax);
         
-        NumberAxis yAxis = new NumberAxis();
-        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis xAxis = new NumberAxis();
+        CategoryAxis yAxis = new CategoryAxis();
      
         BarChart barChart = new BarChart(xAxis, yAxis);    
         
         XYChart.Series series = new XYChart.Series();
         
         for (Map.Entry<String, Integer> set : roadMaintenanceData.entrySet()) {
-            series.getData().add(new XYChart.Data(set.getKey(),set.getValue()));
+            series.getData().add(new XYChart.Data(set.getValue(),set.getKey()));
         }
         
         barChart.getData().add(series);
@@ -114,7 +114,7 @@ public class RoadConditionModel {
         return barChart;
     }
     
-    public static String getTrafficMsgInfo(int xmin, int ymin, int xmax, int ymax) {
+    public static String getTrafficMsgInfo(double xmin, double ymin, double xmax, double ymax) {
         String messageToDisplay = "";
         
         int messageAmount = DigiTrafficApi.getTrafficMessageAmount(xmin, ymin, xmax, ymax);

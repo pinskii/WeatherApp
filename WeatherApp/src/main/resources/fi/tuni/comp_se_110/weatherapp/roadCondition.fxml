@@ -24,10 +24,10 @@
         <CheckBox fx:id="messagesCheckbox" layoutX="14.0" layoutY="237.0" mnemonicParsing="false" onAction="#showTrafficMessages" text="traffic messages" />
         <ComboBox fx:id="streetBox" layoutX="14.0" layoutY="286.0" prefWidth="150.0" />
         <Label layoutX="14.0" layoutY="125.0" text="Select date:" />
-        <Label layoutX="14.0" layoutY="269.0" text="Street IDs:" />
+        <Label layoutX="14.0" layoutY="269.0" text="Select street ID from list:" />
         <AnchorPane fx:id="chart" layoutX="225.0" layoutY="72.0" prefHeight="227.0" prefWidth="322.0" />
       <ComboBox fx:id="infoOptsBox" layoutX="14.0" layoutY="329.0" prefWidth="150.0" />
-      <Label layoutX="12.0" layoutY="312.0" text="Graph info:" />
+      <Label layoutX="12.0" layoutY="312.0" text="Selec info for graph:" />
       <Button layoutX="131.0" layoutY="360.0" mnemonicParsing="false" onAction="#setGraphContent" text="Go" />
       <Label fx:id="trafficMessage" layoutX="246.0" layoutY="325.0" prefHeight="17.0" prefWidth="322.0" />
       <TextField layoutX="15.0" layoutY="41.0" prefHeight="26.0" prefWidth="40.0" fx:id="xMinVal" />
