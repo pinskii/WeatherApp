@@ -16,6 +16,8 @@ import javafx.scene.control.*;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class CombinedController implements Initializable {
     @FXML
@@ -78,17 +80,30 @@ public class CombinedController implements Initializable {
         ArrayList<Double> coords = new ArrayList<>();
         
         if(!xMinVal.getText().isEmpty() && !xMaxVal.getText().isEmpty() 
-                && !yMinVal.getText().isEmpty() && !yMaxVal.getText().isEmpty()) {
+            && !yMinVal.getText().isEmpty() && !yMaxVal.getText().isEmpty()
+            && xMinVal.getText().matches("\\d+") 
+            && xMaxVal.getText().matches("\\d+")
+            && yMinVal.getText().matches("\\d+") 
+            && yMaxVal.getText().matches("\\d+")) {
+            
             double xmin = Double.parseDouble(xMinVal.getText());
             double xmax = Double.parseDouble(xMaxVal.getText());
             double ymin = Double.parseDouble(yMinVal.getText());
             double ymax = Double.parseDouble(yMaxVal.getText());
-
-            coords.add(xmin);
-            coords.add(ymin);
-            coords.add(xmax);
-            coords.add(ymax);
-        } else {
+        
+            if (xmin != xmax && ymin != ymax) {
+                if ((xmin >= 20 && xmin <= 32) && (xmax >= 20 && xmax <= 32) && 
+                    (ymin >= 59 && ymin <= 72) && (ymax >= 59 && ymax <= 72)) {
+                    coords.add(xmin);
+                    coords.add(xmax);
+                    coords.add(ymin);
+                    coords.add(ymax);
+                    return coords;
+                }
+            }
+        }
+            
+        else {
             String boxLocation = citiesBox.getValue();
             
             for (Map.Entry<String, Double[]> set :
@@ -101,101 +116,102 @@ public class CombinedController implements Initializable {
                 }
             }
         }
-        
-        return coords;
+        return null;        
     }
     
     public String getLocation() {
         String location = "";
-        ArrayList<Double> coords = getCoordinates();
-        String boxLocation = citiesBox.getValue();
-        
-        if (boxLocation.isEmpty()) {
-            for (Map.Entry<String, Double[]> set :
-                 citiesWithCoords.entrySet()) {
+        ArrayList<Double> coords = null;
+        if (getCoordinates() != null) {
+            coords = getCoordinates();
+            String boxLocation = citiesBox.getValue();
 
-                if ((set.getValue()[0] >= 23.0 && set.getValue()[0] <= 24.0) && (set.getValue()[1] >= 61.0 && set.getValue()[1] <= 62.0)) {
-                    location = "Tampere";
+            if (boxLocation.isEmpty()) {
+                for (Map.Entry<String, Double[]> set :
+                     citiesWithCoords.entrySet()) {
+
+                    if ((set.getValue()[0] >= 23.0 && set.getValue()[0] <= 24.0) && (set.getValue()[1] >= 61.0 && set.getValue()[1] <= 62.0)) {
+                        location = "Tampere";
+                    }
+                    else if ((set.getValue()[0] >= 25.0 && set.getValue()[0] <= 26.0) && (set.getValue()[1] >= 62.0 && set.getValue()[1] <= 66.0)) {
+                        location = "Jyväskylä";
+                    }
+                    else if ((set.getValue()[0] >= 24.0 && set.getValue()[0] <= 25.0) && (set.getValue()[1] >= 60.0 && set.getValue()[1] <= 61.0)) {
+                        location = "Helsinki";
+                    }
+                    else if ((set.getValue()[0] >= 25.0 && set.getValue()[0] <= 26.0) && (set.getValue()[1] >= 64.0 && set.getValue()[1] <= 66.0)) {
+                        location = "Oulu";
+                    }
+                    else if ((set.getValue()[0] >= 22.0 && set.getValue()[0] <= 23.0) && (set.getValue()[1] >= 60.0 && set.getValue()[1] <= 61.0)) {
+                        location = "Turku";
+                    }
+                    else if ((set.getValue()[0] >= 21.0 && set.getValue()[0] <= 22.0) && (set.getValue()[1] >= 62.0 && set.getValue()[1] <= 64.0)) {
+                        location = "Vaasa";
+                    }
+                    else if ((set.getValue()[0] >= 25.0 && set.getValue()[0] <= 26.0) && (set.getValue()[1] >= 66.0 && set.getValue()[1] <= 67.0)) {
+                        location = "Rovaniemi";
+                    }
                 }
-                else if ((set.getValue()[0] >= 25.0 && set.getValue()[0] <= 26.0) && (set.getValue()[1] >= 62.0 && set.getValue()[1] <= 66.0)) {
-                    location = "Jyväskylä";
-                }
-                else if ((set.getValue()[0] >= 24.0 && set.getValue()[0] <= 25.0) && (set.getValue()[1] >= 60.0 && set.getValue()[1] <= 61.0)) {
-                    location = "Helsinki";
-                }
-                else if ((set.getValue()[0] >= 25.0 && set.getValue()[0] <= 26.0) && (set.getValue()[1] >= 64.0 && set.getValue()[1] <= 66.0)) {
-                    location = "Oulu";
-                }
-                else if ((set.getValue()[0] >= 22.0 && set.getValue()[0] <= 23.0) && (set.getValue()[1] >= 60.0 && set.getValue()[1] <= 61.0)) {
-                    location = "Turku";
-                }
-                else if ((set.getValue()[0] >= 21.0 && set.getValue()[0] <= 22.0) && (set.getValue()[1] >= 62.0 && set.getValue()[1] <= 64.0)) {
-                    location = "Vaasa";
-                }
-                else if ((set.getValue()[0] >= 25.0 && set.getValue()[0] <= 26.0) && (set.getValue()[1] >= 66.0 && set.getValue()[1] <= 67.0)) {
-                    location = "Rovaniemi";
-                }
+            } else {
+                location = boxLocation;
             }
-        } else {
-            location = boxLocation;
+
+            return location;
         }
-        
-        return location;
+        return null;
     }
     
     public void setGraphContents(ActionEvent e) {
-        ArrayList<Double> coords = getCoordinates();
+        ArrayList<Double> coords = null;
+        if (getCoordinates() != null) {
+            coords = getCoordinates();
         
-        String location = getLocation(); 
+            String location = getLocation(); 
 
-        RadioButton selectedRadioButton = (RadioButton) info.getSelectedToggle();
-        String selectedValue = selectedRadioButton.getText();
-        
-        if (selectedValue.equals("weather & road maintenance")) {
-            LocalDate date = sctDayDatePicker.getValue();
+            RadioButton selectedRadioButton = (RadioButton) info.getSelectedToggle();
+            String selectedValue = selectedRadioButton.getText();
 
-            try {
-                weatherChart.getChildren().clear();
-                LineChart tempChart = CombinedModel.drawWeatherGraph(location, date);
-                weatherChart.getChildren().add(tempChart);
-            
-                roadChart.getChildren().clear();
-                BarChart barChart = CombinedModel.drawMaintenanceGraph(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
-                roadChart.getChildren().add(barChart);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            
-        } else if (selectedValue.equals("weather & overall road condition")) {
-            String id = streetBox.getValue();
-            LocalDate date = sctDayDatePicker.getValue();
-            
-            try {
-                weatherChart.getChildren().clear();
-                LineChart tempChart = CombinedModel.drawWeatherGraph(location, date);
-                weatherChart.getChildren().add(tempChart);
-                
-                roadChart.getChildren().clear();
-                LineChart lineChart = CombinedModel.drawRoadConditionGraph(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id);
-                roadChart.getChildren().add(lineChart);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            if (selectedValue.equals("weather & road maintenance")) {
+                LocalDate date = sctDayDatePicker.getValue();
+
+                try {
+                    weatherChart.getChildren().clear();
+                    LineChart tempChart = CombinedModel.drawWeatherGraph(location, date);
+                    weatherChart.getChildren().add(tempChart);
+
+                    roadChart.getChildren().clear();
+                    BarChart barChart = CombinedModel.drawMaintenanceGraph(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
+                    roadChart.getChildren().add(barChart);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            } else if (selectedValue.equals("weather & overall road condition")) {
+                String id = streetBox.getValue();
+                LocalDate date = sctDayDatePicker.getValue();
+
+                try {
+                    weatherChart.getChildren().clear();
+                    LineChart tempChart = CombinedModel.drawWeatherGraph(location, date);
+                    weatherChart.getChildren().add(tempChart);
+
+                    roadChart.getChildren().clear();
+                    LineChart lineChart = CombinedModel.drawRoadConditionGraph(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id);
+                    roadChart.getChildren().add(lineChart);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
     
-    public void setOptions() {
-        
-    }
-    
     public void setStreetIDOptions(ActionEvent e) {
-        
-        if(!xMinVal.getText().isEmpty() && !xMaxVal.getText().isEmpty() 
-                && !yMinVal.getText().isEmpty() && !yMaxVal.getText().isEmpty()) {
-            ArrayList<Double> coords = getCoordinates();
+        ArrayList<Double> coords = null;
+        if (getCoordinates() != null) {
+            coords = getCoordinates();
 
             roadConditionData = DigiTrafficApi.getRoadConditionsForecast(coords.get(0), coords.get(1), coords.get(2), coords.get(3));
-            
+
             for (Map.Entry<String, ArrayList<RoadConditionForecastPoint>> set :
                  roadConditionData.entrySet()) {
 
@@ -204,8 +220,16 @@ public class CombinedController implements Initializable {
 
             streetIDs = FXCollections.observableArrayList(streets);
             streetBox.setItems(streetIDs);
-            
+
         }
+        else {
+            // alert about wrong coordinates
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Check coordinates!");
+            alert.showAndWait();
+        }
+        
     }
     
     @Override

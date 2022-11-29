@@ -16,6 +16,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class RoadConditionController implements Initializable{
     @FXML
@@ -78,69 +80,91 @@ public class RoadConditionController implements Initializable{
     
     public ArrayList<Double> getCoordinates() {
         ArrayList<Double> coords = new ArrayList<>();
-        double xmin = Double.parseDouble(xMinVal.getText());
-        double xmax = Double.parseDouble(xMaxVal.getText());
-        double ymin = Double.parseDouble(yMinVal.getText());
-        double ymax = Double.parseDouble(yMaxVal.getText());
+        if(!xMinVal.getText().isEmpty() && !xMaxVal.getText().isEmpty() 
+            && !yMinVal.getText().isEmpty() && !yMaxVal.getText().isEmpty()
+            && xMinVal.getText().matches("\\d+") 
+            && xMaxVal.getText().matches("\\d+")
+            && yMinVal.getText().matches("\\d+") 
+            && yMaxVal.getText().matches("\\d+")) {
+            
+            double xmin = Double.parseDouble(xMinVal.getText());
+            double xmax = Double.parseDouble(xMaxVal.getText());
+            double ymin = Double.parseDouble(yMinVal.getText());
+            double ymax = Double.parseDouble(yMaxVal.getText());
         
-        coords.add(xmin);
-        coords.add(ymin);
-        coords.add(xmax);
-        coords.add(ymax);
-        
-        return coords;
+            if (xmin != xmax && ymin != ymax) {
+                if ((xmin >= 20 && xmin <= 32) && (xmax >= 20 && xmax <= 32) && 
+                    (ymin >= 59 && ymin <= 72) && (ymax >= 59 && ymax <= 72)) {
+                    coords.add(xmin);
+                    coords.add(xmax);
+                    coords.add(ymin);
+                    coords.add(ymax);
+                    return coords;
+                }
+            }
+        }
+        return null; 
     }
     
     public void setGraphContent(ActionEvent e) {
-        ArrayList<Double> coords = getCoordinates();
+        ArrayList<Double> coords = null;
+        if (getCoordinates() != null) {
+            coords = getCoordinates();
+            RadioButton selectedRadioButton = (RadioButton) road.getSelectedToggle();
+            String selectedValue = selectedRadioButton.getText();
 
-        RadioButton selectedRadioButton = (RadioButton) road.getSelectedToggle();
-        String selectedValue = selectedRadioButton.getText();
-        
-        if (selectedValue.equals("maintenance")) {
-            LocalDate date = sctDayDatePicker.getValue();
+            if (selectedValue.equals("maintenance")) {
+                LocalDate date = sctDayDatePicker.getValue();
 
-            try {
-                chart.getChildren().clear();
-                BarChart barChart = RoadConditionModel.drawBars(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
-                chart.getChildren().add(barChart);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            
-        } else if (selectedValue.equals("road condition forecast")) {
-            String info = infoOptsBox.getValue();
-            String id = streetBox.getValue();
-            
-            try {
-                chart.getChildren().clear();
-                LineChart lineChart = RoadConditionModel.drawChart(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id, info);
-                chart.getChildren().add(lineChart);
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                try {
+                    chart.getChildren().clear();
+                    BarChart barChart = RoadConditionModel.drawBars(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
+                    chart.getChildren().add(barChart);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            } else if (selectedValue.equals("road condition forecast")) {
+                String info = infoOptsBox.getValue();
+                String id = streetBox.getValue();
+
+                try {
+                    chart.getChildren().clear();
+                    LineChart lineChart = RoadConditionModel.drawChart(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id, info);
+                    chart.getChildren().add(lineChart);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }
+        
+
+        
     }
     
     public void showTrafficMessages(ActionEvent e) {
-        ArrayList<Double> coords = getCoordinates();
-
-        if (messagesCheckbox.isSelected()) {
+        ArrayList<Double> coords = null;
+        if (getCoordinates() != null) {
+            coords = getCoordinates();
+            if (messagesCheckbox.isSelected()) {
             String msgToPrint = RoadConditionModel.getTrafficMsgInfo(coords.get(0), coords.get(1), coords.get(2), coords.get(3));
             trafficMessage.setText(msgToPrint);
-        } else {
-            trafficMessage.setText("");
+            } else {
+                trafficMessage.setText("");
+            }
         }
+
+        
     }
     
     public void setStreetIDOptions(ActionEvent e) {
-        
-            ArrayList<Double> coords = getCoordinates();
-
+        ArrayList<Double> coords = null;
+        if (getCoordinates() != null) {
+            coords = getCoordinates();
+            System.out.println(coords);
             roadConditionData = DigiTrafficApi.getRoadConditionsForecast(coords.get(0), coords.get(1), coords.get(2), coords.get(3));
-
             for (Map.Entry<String, ArrayList<RoadConditionForecastPoint>> set :
-                 roadConditionData.entrySet()) {
+                roadConditionData.entrySet()) {
 
                 streets.add(set.getKey());
             }
@@ -148,6 +172,16 @@ public class RoadConditionController implements Initializable{
             streetIDs = FXCollections.observableArrayList(streets);
             System.out.println(streetIDs);
             streetBox.setItems(streetIDs);
+        }
+        else {
+            // alert about wrong coordinates
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Check coordinates!");
+            alert.showAndWait();
+        }
+
+        
             
         
     }
