@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public class DigiTrafficApi {
         private static String baseUrl = "http://tie.digitraffic.fi";
-        public static HashMap<String, Integer> getRoadMaintenanceTasks (LocalDate starttime, int x_min, int y_min, int x_max, int y_max){
+        public static HashMap<String, Integer> getRoadMaintenanceTasks (LocalDate starttime, double x_min, double y_min, double x_max, double y_max){
             HashMap<String, Integer> returnData = new HashMap<>();
             LocalDateTime starttimeLocalDateTime = LocalDateTime.of(starttime.getYear(), starttime.getMonthValue(), starttime.getDayOfMonth(), 0, 0);
             LocalDateTime endtimeLocalDateTime = starttimeLocalDateTime.plusHours(24);
@@ -56,7 +56,7 @@ public class DigiTrafficApi {
             }
             return returnData;
         }
-        public static Integer getTrafficMessageAmount(int x_min, int y_min, int x_max, int y_max){
+        public static Integer getTrafficMessageAmount(double x_min, double y_min, double x_max, double y_max){
             String[] options = {
                 "inactiveHours=0",
                 "includeAreaGeometry=false",
@@ -172,7 +172,7 @@ public class DigiTrafficApi {
             }
             
         }
-        public static HashMap<String, ArrayList<RoadConditionForecastPoint>> getRoadConditionsForecast(int x_min, int y_min, int x_max, int y_max){
+        public static HashMap<String, ArrayList<RoadConditionForecastPoint>> getRoadConditionsForecast(double x_min, double y_min, double x_max, double y_max){
             String responseBody = roadConditionsForecast(String.valueOf(x_min), String.valueOf(y_min), String.valueOf(x_max), String.valueOf(y_max));
             JsonObject dataJsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
             HashMap<String, ArrayList<RoadConditionForecastPoint>> returnMap = new HashMap<String,ArrayList<RoadConditionForecastPoint>>();
