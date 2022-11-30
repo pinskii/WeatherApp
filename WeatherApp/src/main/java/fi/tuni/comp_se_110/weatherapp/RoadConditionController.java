@@ -24,6 +24,10 @@ public class RoadConditionController {
     private CheckBox slipperinessCheckBox;
     private CheckBox overallCheckBox;
     
+    public void showTrafficMessages() {
+        
+    }
+    
     public void updateLocation() {
         
     }
@@ -69,6 +73,16 @@ public class RoadConditionController {
     }
     
     public void setOptions() {
+        
+    }
+    
+    // Added because the funcion was not implemented
+    public void setGraphContent() {
+        
+    }
+    
+    // Added because the funcion was not implemented
+    public void setStreetIDOptions() {
         
     }
 }
