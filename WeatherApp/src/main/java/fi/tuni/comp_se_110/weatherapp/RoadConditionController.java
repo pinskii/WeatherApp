@@ -1,6 +1,7 @@
 
 package fi.tuni.comp_se_110.weatherapp;
 
+import java.util.HashMap;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
@@ -84,5 +85,10 @@ public class RoadConditionController {
     // Added because the funcion was not implemented
     public void setStreetIDOptions() {
         
+    }
+    
+    private HashMap<String, String> getOptions() {
+        HashMap<String, String> newOption = new HashMap();
+        return null;
     }
 }
