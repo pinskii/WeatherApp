@@ -152,26 +152,7 @@ public class DigiTrafficApi {
                 return "Error";
             }
         }
-        private static String metadataLocations(String id){
-            String url = "/api/v3/metadata/locations/"+id;
-            String uri = baseUrl + url;
-            HttpRequest request = HttpRequest.newBuilder()
-              .uri(URI.create(uri))
-              .header("accept-encoding", "gzip")
-              .build();
-            try {
-                HttpClient client = HttpClient.newHttpClient();
-                String returnData = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-                if(JsonParser.parseString(returnData).getAsJsonObject().get("status").getAsInt() == 200){
-                    return returnData;
-                }else{
-                    return null;
-                }
-            }catch(Exception e){
-                return null;
-            }
-            
-        }
+        
         public static HashMap<String, ArrayList<RoadConditionForecastPoint>> getRoadConditionsForecast(double x_min, double y_min, double x_max, double y_max){
             String responseBody = roadConditionsForecast(String.valueOf(x_min), String.valueOf(y_min), String.valueOf(x_max), String.valueOf(y_max));
             JsonObject dataJsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
@@ -212,11 +193,17 @@ public class DigiTrafficApi {
               .header("accept-encoding", "gzip")
               .build();
             try {
-                InputStream responseStream = client.send(request, HttpResponse.BodyHandlers.ofInputStream()).body();
-                GZIPInputStream zipStream = new GZIPInputStream(responseStream);
-                byte[] bytes = zipStream.readAllBytes();
-                String returnData = new String(bytes,StandardCharsets.UTF_8);
-                return returnData;
+                HttpResponse<InputStream> result = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+                if(result.headers().firstValue("content-encoding").isEmpty()){
+                    byte[] bytes = result.body().readAllBytes();
+                    String returnData = new String(bytes,StandardCharsets.UTF_8);
+                    return returnData;
+                }else{
+                    GZIPInputStream zipStream = new GZIPInputStream(result.body());
+                    byte[] bytes = zipStream.readAllBytes();
+                    String returnData = new String(bytes,StandardCharsets.UTF_8);
+                    return returnData;
+                }
             }catch(Exception e){
                 System.out.println(e);
                 return "Error";
