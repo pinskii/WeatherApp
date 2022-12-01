@@ -11,21 +11,21 @@
          <content>
             <AnchorPane fx:id="weatherAnchorPane" prefHeight="200.0" prefWidth="200.0">
                 <children>
-               </children>
+                </children>
             </AnchorPane>
          </content></Tab>
     <Tab text="Road info">
          <content>
             <AnchorPane fx:id="roadAnchorPane" prefHeight="200.0" prefWidth="200.0">
                 <children>
-               </children>
+                </children>
             </AnchorPane>
          </content></Tab>
       <Tab text="Combined">
          <content>
             <AnchorPane fx:id="combinedAnchorPane" prefHeight="200.0" prefWidth="200.0">
                 <children>
-               </children>
+                </children>
             </AnchorPane>
          </content>
       </Tab>

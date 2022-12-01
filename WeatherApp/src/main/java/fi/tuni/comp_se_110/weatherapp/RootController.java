@@ -2,6 +2,7 @@ package fi.tuni.comp_se_110.weatherapp;
 
 import fi.tuni.comp_se_110.weatherapp.App;
 import java.io.IOException;
+import java.util.HashMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,6 +22,13 @@ public class RootController {
     public AnchorPane combinedAnchorPane;
     public AnchorPane settingsAnchorPane;
     
+    private WeatherController weatherController;
+    private RoadConditionController roadConditionController;
+    private CombinedController combinedController;
+    private SettingsController settingsController;
+    
+    private App root;
+
     /**
      * Load and sets all the other views.
      */
@@ -33,6 +41,8 @@ public class RootController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        weatherController = fxmlLoader.getController();
+        weatherController.initializeParentController(this);
         weatherAnchorPane.getChildren().add(weatherScene);
         
         fxmlLoader = new FXMLLoader(App.class.getResource("roadCondition.fxml"));
@@ -42,6 +52,7 @@ public class RootController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        roadConditionController = fxmlLoader.getController();
         roadAnchorPane.getChildren().add(roadConditionScene);
         
         fxmlLoader = new FXMLLoader(App.class.getResource("combined.fxml"));
@@ -51,6 +62,7 @@ public class RootController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        combinedController = fxmlLoader.getController();
         combinedAnchorPane.getChildren().add(combinedScene);
         
         fxmlLoader = new FXMLLoader(App.class.getResource("settings.fxml"));
@@ -60,7 +72,24 @@ public class RootController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        settingsController = fxmlLoader.getController();
         settingsAnchorPane.getChildren().add(settingsScene);
+    }
+    
+    public void initializeRoot(App root) {
+        this.root = root;
+    }
+    
+    public void addNewPreference(PreferenceType type, String name, HashMap<String, String> data) {
+        root.addNewPreference(type, name, data);
+    }
+    
+    public String[] getPreferenceNames(PreferenceType type) {
+        return root.getPreferenceNames(type);
+    }
+    
+    public HashMap<String, String> getPreference(PreferenceType type, String name) {
+        return root.getPreference(type, name);
     }
     
 }

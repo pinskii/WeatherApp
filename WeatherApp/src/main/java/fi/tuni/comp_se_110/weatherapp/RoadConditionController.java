@@ -1,6 +1,7 @@
 
 package fi.tuni.comp_se_110.weatherapp;
 
+import java.util.HashMap;
 import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -49,6 +50,10 @@ public class RoadConditionController implements Initializable{
     ObservableList<String> streetIDs;
     
     private HashMap<String, ArrayList<RoadConditionForecastPoint>> roadConditionData = new HashMap<>();
+    
+    public void showTrafficMessages() {
+        
+    }
     
     public void updateLocation() {
         
@@ -190,5 +195,20 @@ public class RoadConditionController implements Initializable{
     public void initialize(URL url, ResourceBundle rb) {    
         infoOpts = FXCollections.observableArrayList("Precipitation", "Slipperiness", "Overall road condition");
         infoOptsBox.setItems(infoOpts);
+    }
+    
+    // Added because the funcion was not implemented
+    public void setGraphContent() {
+        
+    }
+    
+    // Added because the funcion was not implemented
+    public void setStreetIDOptions() {
+        
+    }
+    
+    private HashMap<String, String> getOptions() {
+        HashMap<String, String> newOption = new HashMap();
+        return null;
     }
 }
