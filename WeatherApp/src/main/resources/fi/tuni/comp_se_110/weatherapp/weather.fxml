@@ -4,16 +4,14 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.WeatherController">
+<AnchorPane id="AnchorPane" prefHeight="440.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.WeatherController">
     <children>
-        <RadioButton fx:id="temperatureRadioButton" layoutX="14.0" layoutY="185.0" mnemonicParsing="false" onAction="#setGraphContent" text="temperature">
+        <RadioButton fx:id="temperatureRadioButton" layoutX="14.0" layoutY="226.0" mnemonicParsing="false" onAction="#setGraphContent" text="temperature">
            <toggleGroup>
               <ToggleGroup fx:id="graph" />
            </toggleGroup>
@@ -21,23 +19,16 @@
             <Font name="Arial" size="13.0" />
          </font>
         </RadioButton>
-        <RadioButton fx:id="windRadioButton" layoutX="14.0" layoutY="215.0" mnemonicParsing="false" onAction="#setGraphContent" text="wind" toggleGroup="$graph" />
-        <RadioButton fx:id="cloudinessRadioButton" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" onAction="#setGraphContent" text="cloudiness" toggleGroup="$graph" />
-        <RadioButton layoutX="14.0" layoutY="275.0" mnemonicParsing="false" onAction="#setGraphContent" text="rain" toggleGroup="$graph" />
-        <RadioButton fx:id="dailyMinMaxRadioButton" layoutX="14.0" layoutY="305.0" mnemonicParsing="false" onAction="#setGraphContent" text="daily min and max" toggleGroup="$graph" />
-        <RadioButton fx:id="dailyAverageRadioButton" layoutX="14.0" layoutY="335.0" mnemonicParsing="false" onAction="#setGraphContent" text="daily average" toggleGroup="$graph" />
-        <DatePicker fx:id="sctDayDatePicker" layoutX="14.0" layoutY="93.0" />
-        <TextField fx:id="locationTextField" layoutX="14.0" layoutY="40.0" />
-        <TableView fx:id="forecastTable" layoutX="247.0" layoutY="51.0" prefHeight="137.0" prefWidth="376.0">
-          <columns>
-            <TableColumn prefWidth="183.0" text="today" />
-            <TableColumn prefWidth="192.0" text="tomorrow" />
-          </columns>
-        </TableView>
-        <Button layoutX="424.0" layoutY="8.0" mnemonicParsing="false" onAction="#loadPreference" text="Load Preference" />
-        <Button layoutX="539.0" layoutY="8.0" mnemonicParsing="false" onAction="#savePreference" text="Save Preference" />
-        <Label layoutX="14.0" layoutY="21.0" text="Location:" />
-        <Label layoutX="14.0" layoutY="76.0" text="Select date:" />
-      <AnchorPane fx:id="tempChart" layoutX="247.0" layoutY="194.0" prefHeight="197.0" prefWidth="424.0" />
+        <RadioButton fx:id="windRadioButton" layoutX="14.0" layoutY="256.0" mnemonicParsing="false" onAction="#setGraphContent" text="wind" toggleGroup="$graph" />
+        <RadioButton fx:id="cloudinessRadioButton" layoutX="14.0" layoutY="286.0" mnemonicParsing="false" onAction="#setGraphContent" text="cloudiness" toggleGroup="$graph" />
+        <RadioButton fx:id="dailyMinMaxRadioButton" layoutX="14.0" layoutY="346.0" mnemonicParsing="false" onAction="#setGraphContent" text="daily min and max" toggleGroup="$graph" />
+        <RadioButton fx:id="dailyAverageRadioButton" layoutX="14.0" layoutY="376.0" mnemonicParsing="false" onAction="#setGraphContent" text="daily average" toggleGroup="$graph" />
+        <DatePicker fx:id="sctDayDatePicker" layoutX="15.0" layoutY="119.0" />
+        <TextField fx:id="locationTextField" layoutX="15.0" layoutY="66.0" />
+        <Button layoutX="484.0" layoutY="7.0" mnemonicParsing="false" onAction="#loadPreference" text="Load Preference" />
+        <Button layoutX="602.0" layoutY="7.0" mnemonicParsing="false" onAction="#savePreference" text="Save Preference" />
+        <Label layoutX="15.0" layoutY="47.0" text="Location:" />
+        <Label layoutX="15.0" layoutY="102.0" text="Select date:" />
+      <AnchorPane fx:id="tempChart" layoutX="208.0" layoutY="61.0" prefHeight="380.0" prefWidth="479.0" />
      </children>
 </AnchorPane>

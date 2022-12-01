@@ -37,7 +37,7 @@ public class RootController {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("weather.fxml"));
         SubScene weatherScene = null; 
         try {
-            weatherScene = new SubScene(fxmlLoader.load(), 640, 480);
+            weatherScene = new SubScene(fxmlLoader.load(), 740, 480);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -48,7 +48,7 @@ public class RootController {
         fxmlLoader = new FXMLLoader(App.class.getResource("roadCondition.fxml"));
         SubScene roadConditionScene = null;
         try {
-            roadConditionScene = new SubScene(fxmlLoader.load(), 640, 480);
+            roadConditionScene = new SubScene(fxmlLoader.load(), 740, 480);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class RootController {
         fxmlLoader = new FXMLLoader(App.class.getResource("combined.fxml"));
         SubScene combinedScene = null;
         try {
-            combinedScene = new SubScene(fxmlLoader.load(), 640, 480);
+            combinedScene = new SubScene(fxmlLoader.load(), 740, 480);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class RootController {
         fxmlLoader = new FXMLLoader(App.class.getResource("settings.fxml"));
         SubScene settingsScene = null;
         try {
-            settingsScene = new SubScene(fxmlLoader.load(), 640, 480);
+            settingsScene = new SubScene(fxmlLoader.load(), 740, 480);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

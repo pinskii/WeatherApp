@@ -9,32 +9,32 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.CombinedController">
+<AnchorPane id="AnchorPane" prefHeight="440.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.CombinedController">
     <children>
-        <RadioButton layoutX="17.0" layoutY="247.0" mnemonicParsing="false" text="weather &amp; overall road condition">
+        <RadioButton layoutX="17.0" layoutY="285.0" mnemonicParsing="false" text="weather &amp; overall road condition">
          <toggleGroup>
             <ToggleGroup fx:id="info" />
          </toggleGroup></RadioButton>
-        <Button layoutX="424.0" layoutY="8.0" mnemonicParsing="false" text="Get preferences" />
-        <Button layoutX="539.0" layoutY="8.0" mnemonicParsing="false" text="Save preferneces" />
-        <ComboBox fx:id="citiesBox" layoutX="14.0" layoutY="146.0" prefWidth="150.0" promptText="Cities" />
-        <RadioButton layoutX="17.0" layoutY="277.0" mnemonicParsing="false" text="weather &amp; road maintenance" toggleGroup="$info" />
-        <Label layoutX="14.0" layoutY="129.0" text="Or select location from list:" />
-      <AnchorPane fx:id="weatherChart" layoutX="226.0" layoutY="43.0" prefHeight="158.0" prefWidth="410.0" />
-      <AnchorPane fx:id="roadChart" layoutX="226.0" layoutY="216.0" prefHeight="158.0" prefWidth="410.0" />
-      <TextField layoutX="14.0" layoutY="38.0" prefHeight="26.0" prefWidth="40.0" fx:id="xMinVal" />
-      <TextField layoutX="69.0" layoutY="38.0" prefHeight="26.0" prefWidth="40.0" fx:id="xMaxVal" />
-      <TextField fx:id="yMinVal" layoutX="14.0" layoutY="85.0" prefHeight="26.0" prefWidth="40.0" />
-      <TextField fx:id="yMaxVal" layoutX="70.0" layoutY="85.0" prefHeight="26.0" prefWidth="40.0" />
-      <Label layoutX="14.0" layoutY="21.0" prefHeight="17.0" prefWidth="214.0" text="Select longitude coordinates (20-32):" />
-      <Label layoutX="14.0" layoutY="68.0" prefHeight="17.0" prefWidth="203.0" text="And latitude coordinates (59-70):" />
-      <Button fx:id="searchBtn" layoutX="136.0" layoutY="86.0" mnemonicParsing="false" onAction="#setStreetIDOptions" text="Search" />
+        <Button layoutX="485.0" layoutY="7.0" mnemonicParsing="false" text="Get preferences" />
+        <Button layoutX="603.0" layoutY="7.0" mnemonicParsing="false" text="Save preferneces" />
+        <ComboBox fx:id="citiesBox" layoutX="18.0" layoutY="128.0" prefHeight="26.0" prefWidth="159.0" promptText="Cities" />
+        <RadioButton layoutX="17.0" layoutY="315.0" mnemonicParsing="false" text="weather &amp; road maintenance" toggleGroup="$info" />
+        <Label layoutX="18.0" layoutY="111.0" text="Or select location from list:" />
+      <AnchorPane fx:id="weatherChart" layoutX="279.0" layoutY="36.0" prefHeight="184.0" prefWidth="410.0" />
+      <AnchorPane fx:id="roadChart" layoutX="279.0" layoutY="233.0" prefHeight="199.0" prefWidth="410.0" />
+      <TextField layoutX="18.0" layoutY="35.0" prefHeight="26.0" prefWidth="40.0" fx:id="xMinVal" />
+      <TextField layoutX="73.0" layoutY="35.0" prefHeight="26.0" prefWidth="40.0" fx:id="xMaxVal" />
+      <TextField fx:id="yMinVal" layoutX="18.0" layoutY="82.0" prefHeight="26.0" prefWidth="40.0" />
+      <TextField fx:id="yMaxVal" layoutX="74.0" layoutY="82.0" prefHeight="26.0" prefWidth="40.0" />
+      <Label layoutX="18.0" layoutY="18.0" prefHeight="17.0" prefWidth="214.0" text="Select longitude coordinates (20-32):" />
+      <Label layoutX="18.0" layoutY="65.0" prefHeight="17.0" prefWidth="203.0" text="And latitude coordinates (59-70):" />
+      <Button fx:id="searchBtn" layoutX="121.0" layoutY="160.0" mnemonicParsing="false" onAction="#setStreetIDOptions" text="Search" />
       <Label layoutX="58.0" layoutY="43.0" text="-" />
       <Label layoutX="58.0" layoutY="90.0" text="-" />
-      <DatePicker fx:id="sctDayDatePicker" layoutX="14.0" layoutY="200.0" />
-      <Label layoutX="14.0" layoutY="183.0" text="Select date:" />
-      <ComboBox fx:id="streetBox" layoutX="14.0" layoutY="329.0" prefWidth="150.0" />
-      <Label layoutX="14.0" layoutY="312.0" text="Select street ID from list:" />
-      <Button layoutX="131.0" layoutY="361.0" mnemonicParsing="false" onAction="#setGraphContents" text="Go" />
+      <DatePicker fx:id="sctDayDatePicker" layoutX="14.0" layoutY="234.0" />
+      <Label layoutX="14.0" layoutY="219.0" text="Select date:" />
+      <ComboBox fx:id="streetBox" layoutX="15.0" layoutY="382.0" prefWidth="150.0" />
+      <Label layoutX="15.0" layoutY="365.0" text="Select street ID from list:" />
+      <Button layoutX="132.0" layoutY="414.0" mnemonicParsing="false" onAction="#setGraphContents" text="Go" />
      </children>
 </AnchorPane>

@@ -179,7 +179,7 @@ public class WeatherModel {
             } 
         }
         
-        lineChart.setMaxSize(424, 250);
+        lineChart.setMaxSize(424, 283);
         
         return lineChart;
 

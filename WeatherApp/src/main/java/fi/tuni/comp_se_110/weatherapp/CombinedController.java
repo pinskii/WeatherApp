@@ -102,7 +102,6 @@ public class CombinedController implements Initializable {
                 }
             }
         }
-            
         else {
             String boxLocation = citiesBox.getValue();
             
@@ -115,6 +114,7 @@ public class CombinedController implements Initializable {
                     }
                 }
             }
+            return coords;
         }
         return null;        
     }
