@@ -95,8 +95,8 @@ public class CombinedController implements Initializable {
                 if ((xmin >= 20 && xmin <= 32) && (xmax >= 20 && xmax <= 32) && 
                     (ymin >= 59 && ymin <= 72) && (ymax >= 59 && ymax <= 72)) {
                     coords.add(xmin);
-                    coords.add(xmax);
                     coords.add(ymin);
+                    coords.add(xmax);
                     coords.add(ymax);
                     return coords;
                 }
@@ -126,7 +126,7 @@ public class CombinedController implements Initializable {
             coords = getCoordinates();
             String boxLocation = citiesBox.getValue();
 
-            if (boxLocation.isEmpty()) {
+            if (boxLocation == null) {
                 for (Map.Entry<String, Double[]> set :
                      citiesWithCoords.entrySet()) {
 
@@ -208,6 +208,9 @@ public class CombinedController implements Initializable {
     public void setStreetIDOptions(ActionEvent e) {
         ArrayList<Double> coords = null;
         if (getCoordinates() != null) {
+            streets.clear();
+            streetBox.getItems().clear();
+            
             coords = getCoordinates();
 
             roadConditionData = DigiTrafficApi.getRoadConditionsForecast(coords.get(0), coords.get(1), coords.get(2), coords.get(3));
