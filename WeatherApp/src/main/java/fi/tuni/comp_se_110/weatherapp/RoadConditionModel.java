@@ -109,7 +109,7 @@ public class RoadConditionModel {
         xAxis.setLabel("amount");
         yAxis.setLabel("task");
 
-        barChart.setMaxSize(424, 350);
+        barChart.setMaxSize(424, 250);
         
         return barChart;
     }

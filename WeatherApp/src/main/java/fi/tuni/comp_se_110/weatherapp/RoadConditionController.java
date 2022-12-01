@@ -1,6 +1,7 @@
 
 package fi.tuni.comp_se_110.weatherapp;
 
+import java.util.HashMap;
 import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -50,6 +51,10 @@ public class RoadConditionController implements Initializable{
     
     private HashMap<String, ArrayList<RoadConditionForecastPoint>> roadConditionData = new HashMap<>();
     
+    public void showTrafficMessages() {
+        
+    }
+    
     public void updateLocation() {
         
     }
@@ -96,8 +101,8 @@ public class RoadConditionController implements Initializable{
                 if ((xmin >= 20 && xmin <= 32) && (xmax >= 20 && xmax <= 32) && 
                     (ymin >= 59 && ymin <= 72) && (ymax >= 59 && ymax <= 72)) {
                     coords.add(xmin);
-                    coords.add(xmax);
                     coords.add(ymin);
+                    coords.add(xmax);
                     coords.add(ymax);
                     return coords;
                 }
@@ -137,9 +142,6 @@ public class RoadConditionController implements Initializable{
                 }
             }
         }
-        
-
-        
     }
     
     public void showTrafficMessages(ActionEvent e) {
@@ -153,13 +155,14 @@ public class RoadConditionController implements Initializable{
                 trafficMessage.setText("");
             }
         }
-
-        
     }
     
     public void setStreetIDOptions(ActionEvent e) {
         ArrayList<Double> coords = null;
         if (getCoordinates() != null) {
+            streets.clear();
+            streetBox.getItems().clear();
+            
             coords = getCoordinates();
             System.out.println(coords);
             roadConditionData = DigiTrafficApi.getRoadConditionsForecast(coords.get(0), coords.get(1), coords.get(2), coords.get(3));
@@ -180,15 +183,16 @@ public class RoadConditionController implements Initializable{
             alert.setHeaderText("Check coordinates!");
             alert.showAndWait();
         }
-
-        
-            
-        
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {    
         infoOpts = FXCollections.observableArrayList("Precipitation", "Slipperiness", "Overall road condition");
         infoOptsBox.setItems(infoOpts);
+    }
+    
+    private HashMap<String, String> getOptions() {
+        HashMap<String, String> newOption = new HashMap();
+        return null;
     }
 }
