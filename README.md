@@ -1,14 +1,17 @@
 - Prototype.fig: Figma file, a prototype for the user interface 
 
-- COMP.SE.100_project_document: Design document which describes the overall structure of our project 
+- COMP.SE.100_design_document: Design document which describes the overall structure of our project 
 
-- class_diagram_V0.2.drawio: The same class diagram we have in the design document as a drawio file.
 
-- class_diagram_V0.2.png: The same class diagram we have in the design document as a png file.
+- class_diagram_V0.3.drawio: The same class diagram we have in the design document as a drawio file.
+
+- class_diagram_V3.0.png: The same class diagram we have in the design document as a png file.
 
 - WeatherApp is the application itself 
 
-Apache NetBeans IDE is recommended to run this application since it what we use but it might also work with other Java IDEs. To run the program open the WeatherApp project in NetBeans and run it. 
+Apache NetBeans IDE is recommended to run this application since it what we use but it might also work with other Java IDEs. To run the program open the WeatherApp project in NetBeans and run it. Link to the design document: https://course-gitlab.tuni.fi/comp-se-110-software-design_2022-2023/matti-pinja-melina-and-someone/-/blob/main/COMP.SE.100_design_document.pdf
+
+The class diagram png and drawio files are included because it could be hard to read ftom a screenshot without zooming. They are marked with the final_submission tag.
 
 The program has four tabs. On "Weather" first write a Finnish city name and choose a date. Then press the radio buttons to choose which data to show in the graph. 
 
