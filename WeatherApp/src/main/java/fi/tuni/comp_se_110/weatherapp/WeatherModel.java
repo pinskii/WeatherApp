@@ -120,8 +120,8 @@ public class WeatherModel {
                 lineChart.getData().addAll(series);
                 xAxis.setLabel("time");
                 yAxis.setLabel("cloudiness (%)");
-
             }
+            lineChart.setLegendVisible(false);
         }
         if(radioButtonSelection.equals("daily min and max") || 
                 radioButtonSelection.equals("daily average")) {
@@ -144,13 +144,13 @@ public class WeatherModel {
                             min = Double.parseDouble(datesTemperatures.get(k).getTemperature());
                         }
                     }
-                    System.out.println("pöö");
                     String dateAsString = datesTemperatures.get(0).getDate().format(formatter2);
 
                     series1.getData().add(new XYChart.Data(dateAsString, min));
                     series2.getData().add(new XYChart.Data(dateAsString, max));
                 }
-
+                series1.setName("Daily min temperature");
+                series2.setName("Daily max temperature");
                 lineChart.getData().addAll(series1, series2);
                 xAxis.setLabel("date");
                 yAxis.setLabel("temperature (°C)");
@@ -172,14 +172,14 @@ public class WeatherModel {
 
                     series.getData().add(new XYChart.Data(dateAsString, average));
                 }
-
+                lineChart.setLegendVisible(false);
                 lineChart.getData().addAll(series);
                 xAxis.setLabel("date");
                 yAxis.setLabel("temperature (°C)");
             } 
         }
         
-        lineChart.setMaxSize(424, 283);
+        lineChart.setMaxSize(470, 370);
         
         return lineChart;
 

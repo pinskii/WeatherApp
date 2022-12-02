@@ -29,6 +29,6 @@
         <Button layoutX="602.0" layoutY="7.0" mnemonicParsing="false" onAction="#savePreference" text="Save Preference" />
         <Label layoutX="15.0" layoutY="47.0" text="Location:" />
         <Label layoutX="15.0" layoutY="102.0" text="Select date:" />
-      <AnchorPane fx:id="tempChart" layoutX="208.0" layoutY="61.0" prefHeight="380.0" prefWidth="479.0" />
+      <AnchorPane fx:id="tempChart" layoutX="208.0" layoutY="61.0" prefHeight="370.0" prefWidth="480.0" />
      </children>
 </AnchorPane>

@@ -60,7 +60,8 @@ public class RoadConditionModel {
         if(info.equals("Precipitation")) {
             XYChart.Series series = new XYChart.Series();
             for(int j = 0 ; j < precipitation.size() ; j++) {
-                series.getData().add(new XYChart.Data(time.get(j),precipitation.get(j)));
+                String withoutUnderscores = precipitation.get(j).replaceAll("_", " ");
+                series.getData().add(new XYChart.Data(time.get(j),withoutUnderscores));
             }
             lineChart.getData().add(series);
             xAxis.setLabel("time");
@@ -69,7 +70,13 @@ public class RoadConditionModel {
         } else if (info.equals("Slipperiness")) {
             XYChart.Series series = new XYChart.Series();
             for(int j = 0 ; j < slipperiness.size() ; j++) {
-                series.getData().add(new XYChart.Data(time.get(j),slipperiness.get(j)));
+                
+                if(slipperiness.get(j)==null) {
+                    series.getData().add(new XYChart.Data(time.get(j),"NOT SLIPPERY"));
+                } else {
+                    String withoutUnderscores = slipperiness.get(j).replaceAll("_", " ");
+                    series.getData().add(new XYChart.Data(time.get(j),withoutUnderscores));
+                }
             }
             lineChart.getData().addAll(series);
             xAxis.setLabel("time");
@@ -77,13 +84,15 @@ public class RoadConditionModel {
         } else if (info.equals("Overall road condition")) {
             XYChart.Series series = new XYChart.Series();
             for(int j = 0 ; j < overallCondition.size() ; j++) {
-                series.getData().add(new XYChart.Data(time.get(j),overallCondition.get(j)));
+                String withoutUnderscores = overallCondition.get(j).replaceAll("_", " ");
+                series.getData().add(new XYChart.Data(time.get(j),withoutUnderscores));
             }
             lineChart.getData().addAll(series);
             xAxis.setLabel("time");
             yAxis.setLabel("overall road condition");
         }
-        lineChart.setMaxSize(424, 250);
+        lineChart.setMaxSize(480, 353);
+        lineChart.setLegendVisible(false);
              
         return lineChart;   
     }
@@ -101,16 +110,23 @@ public class RoadConditionModel {
         
         XYChart.Series series = new XYChart.Series();
         
+        if(roadMaintenanceData.isEmpty()) {
+            barChart = null;
+            return barChart;
+        }
+        
         for (Map.Entry<String, Integer> set : roadMaintenanceData.entrySet()) {
-            series.getData().add(new XYChart.Data(set.getValue(),set.getKey()));
+            String withoutUnderscores = set.getKey().replaceAll("_", " ");
+            series.getData().add(new XYChart.Data(set.getValue(),withoutUnderscores));
         }
         
         barChart.getData().add(series);
         xAxis.setLabel("amount");
         yAxis.setLabel("task");
 
-        barChart.setMaxSize(400, 278);
-        
+        barChart.setMaxSize(480, 353);
+        barChart.setLegendVisible(false);
+                
         return barChart;
     }
     

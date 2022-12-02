@@ -4,6 +4,7 @@ package fi.tuni.comp_se_110.weatherapp;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -46,7 +47,7 @@ public class CombinedController implements Initializable {
     private ObservableList<String> cities;
     
     private HashMap<String, ArrayList<RoadConditionForecastPoint>> roadConditionData = new HashMap<>();
-    private HashMap<String, Double[]> citiesWithCoords = new HashMap<>();
+    private final HashMap<String, Double[]> citiesWithCoords = new HashMap<>();
     
     Double[] treCoords = {23.56,61.43,23.94,61.55}; // 23 ja 24 / 61 ja 62
     Double[] jkylaCoords = {25.63,62.21,25.82,62.31}; // 25 ja 26 / 62 ja 63
@@ -81,10 +82,10 @@ public class CombinedController implements Initializable {
         
         if(!xMinVal.getText().isEmpty() && !xMaxVal.getText().isEmpty() 
             && !yMinVal.getText().isEmpty() && !yMaxVal.getText().isEmpty()
-            && xMinVal.getText().matches("\\d+") 
-            && xMaxVal.getText().matches("\\d+")
-            && yMinVal.getText().matches("\\d+") 
-            && yMaxVal.getText().matches("\\d+")) {
+            && xMinVal.getText().matches("\\d+(\\.\\d+)?") 
+            && xMaxVal.getText().matches("\\d+(\\.\\d+)?")
+            && yMinVal.getText().matches("\\d+(\\.\\d+)?") 
+            && yMaxVal.getText().matches("\\d+(\\.\\d+)?")) {
             
             double xmin = Double.parseDouble(xMinVal.getText());
             double xmax = Double.parseDouble(xMaxVal.getText());
@@ -109,9 +110,7 @@ public class CombinedController implements Initializable {
                  citiesWithCoords.entrySet()) {
 
                 if(set.getKey().equals(boxLocation)) {
-                    for (var coord : set.getValue()) {
-                        coords.add(coord);
-                    }
+                    coords.addAll(Arrays.asList(set.getValue()));
                 }
             }
             return coords;
@@ -169,37 +168,72 @@ public class CombinedController implements Initializable {
             String location = getLocation(); 
 
             RadioButton selectedRadioButton = (RadioButton) info.getSelectedToggle();
-            String selectedValue = selectedRadioButton.getText();
+            LocalDate date = sctDayDatePicker.getValue();
 
-            if (selectedValue.equals("weather & road maintenance")) {
-                LocalDate date = sctDayDatePicker.getValue();
+            if (selectedRadioButton == null && date == null) {
+                // alert to choose all the necessary info
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Choose all the needed info!");
+                alert.showAndWait();
+            }
+            else if(selectedRadioButton == null) {
+                // alert to choose radiobutton
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Choose a radiobutton!");
+                alert.showAndWait();
+            } else if(date == null) {
+                // alert to choose a date
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Choose a date!");
+                alert.showAndWait();
+            }
+            else {
+                String selectedValue = selectedRadioButton.getText();
 
-                try {
-                    weatherChart.getChildren().clear();
-                    LineChart tempChart = CombinedModel.drawWeatherGraph(location, date);
-                    weatherChart.getChildren().add(tempChart);
+                if (selectedValue.equals("weather & road maintenance")) {
+                    try {
+                        weatherChart.getChildren().clear();
+                        LineChart tempChart = CombinedModel.drawWeatherGraph(location, date);
+                        weatherChart.getChildren().add(tempChart);
 
-                    roadChart.getChildren().clear();
-                    BarChart barChart = CombinedModel.drawMaintenanceGraph(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
-                    roadChart.getChildren().add(barChart);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                        roadChart.getChildren().clear();
+                        BarChart barChart = CombinedModel.drawMaintenanceGraph(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
+                        if(barChart == null) {
+                            Label infoMessage = new Label("No maintenance tasks in your selected area /"
+                                    + " on your selected date!"); 
+                            roadChart.getChildren().add(infoMessage);
+                        } else{
+                            roadChart.getChildren().add(barChart);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
 
-            } else if (selectedValue.equals("weather & overall road condition")) {
-                String id = streetBox.getValue();
-                LocalDate date = sctDayDatePicker.getValue();
+                } else if (selectedValue.equals("weather & overall road condition")) {
+                    String id = streetBox.getValue();
+                    
+                    if(id == null) {
+                        // alert to choose a street ID
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Choose a street ID from the list!");
+                        alert.showAndWait();
+                    }
 
-                try {
-                    weatherChart.getChildren().clear();
-                    LineChart tempChart = CombinedModel.drawWeatherGraph(location, date);
-                    weatherChart.getChildren().add(tempChart);
+                    try {
+                        weatherChart.getChildren().clear();
+                        LineChart tempChart = CombinedModel.drawWeatherGraph(location, date);
+                        weatherChart.getChildren().add(tempChart);
 
-                    roadChart.getChildren().clear();
-                    LineChart lineChart = CombinedModel.drawRoadConditionGraph(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id);
-                    roadChart.getChildren().add(lineChart);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                        roadChart.getChildren().clear();
+                        LineChart lineChart = CombinedModel.drawRoadConditionGraph(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id);
+                        roadChart.getChildren().add(lineChart);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         }
@@ -212,7 +246,7 @@ public class CombinedController implements Initializable {
             streetBox.getItems().clear();
             
             coords = getCoordinates();
-
+            
             roadConditionData = DigiTrafficApi.getRoadConditionsForecast(coords.get(0), coords.get(1), coords.get(2), coords.get(3));
 
             for (Map.Entry<String, ArrayList<RoadConditionForecastPoint>> set :
@@ -220,10 +254,16 @@ public class CombinedController implements Initializable {
 
                 streets.add(set.getKey());
             }
-
-            streetIDs = FXCollections.observableArrayList(streets);
-            streetBox.setItems(streetIDs);
-
+            if(streets.isEmpty()) {
+                // alert to use wider coordinates
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Choose a wider coordinate area!");
+                alert.showAndWait();
+            } else {
+                streetIDs = FXCollections.observableArrayList(streets);
+                streetBox.setItems(streetIDs);
+            }
         }
         else {
             // alert about wrong coordinates

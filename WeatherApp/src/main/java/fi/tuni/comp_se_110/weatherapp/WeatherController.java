@@ -64,17 +64,51 @@ public class WeatherController {
     public void setGraphContent() {
         RadioButton selectedRadioButton = (RadioButton) graph.getSelectedToggle();
         selectedValue = selectedRadioButton.getText();
-        
         location = locationTextField.getText();
-        
         localDate = sctDayDatePicker.getValue();
-        
-        try {
-            tempChart.getChildren().clear();
-            LineChart lineChart = WeatherModel.drawGraph(selectedValue, location, localDate);
-            tempChart.getChildren().add(lineChart);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            
+        if(location.isEmpty() || localDate == null) {
+            if(location.isEmpty() && localDate == null){
+                // alert about no location
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Choose a location and a date!");
+                alert.showAndWait();
+            }
+            else if(localDate == null) {
+                // alert about no date
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Choose a date!");
+                alert.showAndWait();
+            } else if(location.isEmpty()) {
+                // alert about both missing
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Type a location!");
+                alert.showAndWait();
+            }
+        } 
+        else if (localDate.isAfter(LocalDate.now()) && (selectedValue.equals("daily min and max") || selectedValue.equals("daily average"))){
+            // alert about choosing a earlier date
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Choose a date in the past!");
+            alert.showAndWait();
+        } else if (localDate.isBefore(LocalDate.now())&& !(selectedValue.equals("daily min and max") || selectedValue.equals("daily average"))){
+            // alert about choosing a later date
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Choose a date in the future!");
+            alert.showAndWait();
+        } else {
+            try {
+                tempChart.getChildren().clear();
+                LineChart lineChart = WeatherModel.drawGraph(selectedValue, location, localDate);
+                tempChart.getChildren().add(lineChart);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
     
