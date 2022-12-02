@@ -8,6 +8,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +49,8 @@ public class RoadConditionController implements Initializable{
     private ObservableList<String> infoOpts;
     ArrayList<String> streets = new ArrayList<>();  
     ObservableList<String> streetIDs;
+    
+    private RootController parentController;
     
     private HashMap<String, ArrayList<RoadConditionForecastPoint>> roadConditionData = new HashMap<>();
     
@@ -111,7 +114,7 @@ public class RoadConditionController implements Initializable{
         return null; 
     }
     
-    public void setGraphContent(ActionEvent e) {
+    public void setGraphContent() {
         ArrayList<Double> coords = null;
         if (getCoordinates() != null) {
             coords = getCoordinates();
@@ -141,10 +144,7 @@ public class RoadConditionController implements Initializable{
                     ex.printStackTrace();
                 }
             }
-        }
-        
-
-        
+        }  
     }
     
     public void showTrafficMessages(ActionEvent e) {
@@ -185,10 +185,6 @@ public class RoadConditionController implements Initializable{
             alert.setHeaderText("Check coordinates!");
             alert.showAndWait();
         }
-
-        
-            
-        
     }
     
     @Override
@@ -197,18 +193,65 @@ public class RoadConditionController implements Initializable{
         infoOptsBox.setItems(infoOpts);
     }
     
-    // Added because the funcion was not implemented
-    public void setGraphContent() {
-        
+    public void initializeParentController(RootController parentController) {
+        this.parentController = parentController;
     }
     
-    // Added because the funcion was not implemented
-    public void setStreetIDOptions() {
-        
+    public HashMap<String, String> getOptions() {
+        HashMap<String, String> newOptions = new HashMap();
+        newOptions.put("xMin", xMinVal.getText());
+        newOptions.put("xMax", xMaxVal.getText());
+        newOptions.put("yMin", yMinVal.getText());
+        newOptions.put("yMax", yMaxVal.getText());
+        newOptions.put("date", sctDayDatePicker.getValue().toString());
+        newOptions.put("selected", ((RadioButton)road.getSelectedToggle()).getText());
+        if(messagesCheckbox.isSelected()) {
+            newOptions.put("messages", "True");
+        } else {
+            newOptions.put("messages", "False");
+        }
+        newOptions.put("street_id", streetBox.getValue());
+        newOptions.put("graph_info", infoOptsBox.getValue());
+        return newOptions;
     }
     
-    private HashMap<String, String> getOptions() {
-        HashMap<String, String> newOption = new HashMap();
-        return null;
+    public void loadPreference() {
+        String selected = parentController.selectPreference(PreferenceType.ROAD);
+        setPreference(selected);
+    }
+    
+    public void setPreference(String name) {
+        Map<String, String> preference = parentController.getPreference(PreferenceType.ROAD, name);
+        setPreference(preference);
+    }
+    
+    public void setPreference(Map<String, String> preference) {
+        if(preference != null) {
+            xMinVal.setText(preference.get("xMin"));
+            xMaxVal.setText(preference.get("xMax"));
+            yMinVal.setText(preference.get("yMin"));
+            yMaxVal.setText(preference.get("yMax"));
+            sctDayDatePicker.setValue(LocalDate.parse(preference.get("date"), DateTimeFormatter.ISO_DATE));
+            for(Toggle toggle : road.getToggles()) {
+                if(((RadioButton) toggle).getText().equals(preference.get("selected"))) {
+                    road.selectToggle(toggle);
+                }
+            }
+            if(preference.get("message") != null) {
+                if(preference.get("message").equals("True")) {
+                    messagesCheckbox.setSelected(true);
+                } else {
+                    messagesCheckbox.setSelected(false);
+                }
+            }
+            
+            streetBox.setValue(preference.get("street_id"));
+            infoOptsBox.setValue(preference.get("graph_info"));
+            setGraphContent();
+        }
+    }
+    
+    public void savePreference() {
+        parentController.savePreference(PreferenceType.ROAD, getOptions());
     }
 }

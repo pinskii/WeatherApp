@@ -30,7 +30,6 @@ public class WeatherController {
     private LocalDate localDate;
     
     private RootController parentController;
-    private HashMap<String, HashMap<String, String>> options = new HashMap();
 
     public void updateLocation() {
         
@@ -57,10 +56,6 @@ public class WeatherController {
         
     }
     
-    public void initializeParentController(RootController parentController) {
-        this.parentController = parentController;
-    }
-    
     public void setGraphContent() {
         RadioButton selectedRadioButton = (RadioButton) graph.getSelectedToggle();
         selectedValue = selectedRadioButton.getText();
@@ -78,7 +73,19 @@ public class WeatherController {
         }
     }
     
-    private HashMap<String, String> getOptions() {
+    public void initializeParentController(RootController parentController) {
+        this.parentController = parentController;
+    }
+    
+    public Map<String, String> getOptions() {
+        Map<String, String> newOption = new HashMap();
+        newOption.put("location", locationTextField.getText());
+        newOption.put("date", sctDayDatePicker.getValue().toString());
+        newOption.put("selected", ((RadioButton)graph.getSelectedToggle()).getText());
+        return newOption;
+    }
+    
+    HashMap<String, String> getHashOptions() {
         HashMap<String, String> newOption = new HashMap();
         newOption.put("location", locationTextField.getText());
         newOption.put("date", sctDayDatePicker.getValue().toString());
@@ -87,21 +94,13 @@ public class WeatherController {
     }
     
     public void loadPreference() {
-        String[] preferenceNames = parentController.getPreferenceNames(PreferenceType.WEATHER);
-        if(preferenceNames == null) {
-            return;
-        }
-        ChoiceDialog cd = new ChoiceDialog(preferenceNames[0], preferenceNames);
-        cd.setTitle("Preference");
-        cd.setHeaderText("Select preference.");
-        cd.showAndWait();
-        String selected = cd.getResult().toString();
+        String selected = parentController.selectPreference(PreferenceType.WEATHER);
         setPreference(selected);
-        setGraphContent();
+   
     }
     
     public void setPreference(String name) {
-        HashMap<String, String> preference = parentController.getPreference(PreferenceType.WEATHER, name);
+        Map<String, String> preference = parentController.getPreference(PreferenceType.WEATHER, name);
         if(preference != null) {         
             locationTextField.setText(preference.get("location"));
             sctDayDatePicker.setValue(LocalDate.parse(preference.get("date"), DateTimeFormatter.ISO_DATE));
@@ -113,13 +112,34 @@ public class WeatherController {
         }
     }
     
-    public void savePreference() {
-        TextInputDialog td = new TextInputDialog("Preference");
-        td.setTitle("Preference");
-        td.setHeaderText("Enter preference name.");
-        td.showAndWait();
-        String preferenceName = td.getResult();
-        HashMap<String, String> options = getOptions();
-        parentController.addNewPreference(PreferenceType.WEATHER, preferenceName, options);
+    public void setPreference(Map<String, String> preference) {
+        if(preference != null) {         
+            locationTextField.setText(preference.get("location"));
+            sctDayDatePicker.setValue(LocalDate.parse(preference.get("date"), DateTimeFormatter.ISO_DATE));
+            for(Toggle toggle : graph.getToggles()) {
+                if(((RadioButton) toggle).getText().equals(preference.get("selected"))){
+                    graph.selectToggle(toggle);
+                }
+            }
+            setGraphContent();
+        }
     }
+    
+    public void savePreference() {
+        parentController.savePreference(PreferenceType.WEATHER, getOptions());
+    }
+    
+    public void test() {
+        
+    }
+    
+    public LineChart getLineChart() {
+        LineChart lineChart = (LineChart) tempChart.getChildren().get(0);
+        return lineChart;
+    }
+    
+    public void getDataset() {
+        
+    }
+    
 }

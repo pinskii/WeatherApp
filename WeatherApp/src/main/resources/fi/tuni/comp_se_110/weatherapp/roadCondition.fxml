@@ -10,11 +10,11 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.RoadConditionController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.tuni.comp_se_110.weatherapp.RoadConditionController">
     <children>
         <DatePicker fx:id="sctDayDatePicker" layoutX="14.0" layoutY="142.0" />
-        <Button layoutX="424.0" layoutY="8.0" mnemonicParsing="false" text="Get preferences" />
-        <Button layoutX="539.0" layoutY="8.0" mnemonicParsing="false" text="Save preferneces" />
+        <Button layoutX="424.0" layoutY="8.0" mnemonicParsing="false" onAction="#loadPreference" text="Get preferences" />
+        <Button layoutX="539.0" layoutY="8.0" mnemonicParsing="false" onAction="#savePreference" text="Save preferneces" />
         <RadioButton layoutX="14.0" layoutY="186.0" mnemonicParsing="false" text="maintenance">
            <toggleGroup>
               <ToggleGroup fx:id="road" />

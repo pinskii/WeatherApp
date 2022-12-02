@@ -3,6 +3,7 @@ package fi.tuni.comp_se_110.weatherapp;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +56,8 @@ public class CombinedController implements Initializable {
     Double[] tkuCoords = {22.08,60.34,22.37,60.50}; // 22 ja 23 / 60 ja 61
     Double[] vaasaCoords = {21.42,62.98,21.82,63.17}; // 21 ja 22 / 62 ja 64
     Double[] rniemiCoords = {25.63,66.47,25.75,66.51}; // 25 ja 26 / 66 ja 67
+    
+    private RootController parentController;
     
     public void updateLocation() {
         
@@ -161,7 +164,7 @@ public class CombinedController implements Initializable {
         return null;
     }
     
-    public void setGraphContents(ActionEvent e) {
+    public void setGraphContents() {
         ArrayList<Double> coords = null;
         if (getCoordinates() != null) {
             coords = getCoordinates();
@@ -230,6 +233,55 @@ public class CombinedController implements Initializable {
             alert.showAndWait();
         }
         
+    }
+    
+    public void initializeParentController(RootController parentController) {
+        this.parentController = parentController;
+    }
+    
+    public HashMap<String, String> getOptions() {
+        HashMap<String, String> newOptions = new HashMap();
+        newOptions.put("xMin", xMinVal.getText());
+        newOptions.put("xMax", xMaxVal.getText());
+        newOptions.put("yMin", yMinVal.getText());
+        newOptions.put("yMax", yMaxVal.getText());
+        newOptions.put("date", sctDayDatePicker.getValue().toString());
+        newOptions.put("selected", ((RadioButton)info.getSelectedToggle()).getText());
+        newOptions.put("street_id", streetBox.getValue());
+        newOptions.put("city", citiesBox.getValue());
+        return newOptions;
+    }
+    
+    public void loadPreference() {
+        String selected = parentController.selectPreference(PreferenceType.COMBINED);
+        setPreference(selected);
+    }
+    
+    public void setPreference(String name) {
+        Map<String, String> preference = parentController.getPreference(PreferenceType.COMBINED, name);
+        setPreference(preference);
+    }
+    
+    public void setPreference(Map<String, String> preference) {
+        if(preference != null) {
+            xMinVal.setText(preference.get("xMin"));
+            xMaxVal.setText(preference.get("xMax"));
+            yMinVal.setText(preference.get("yMin"));
+            yMaxVal.setText(preference.get("yMax"));
+            sctDayDatePicker.setValue(LocalDate.parse(preference.get("date"), DateTimeFormatter.ISO_DATE));
+            for(Toggle toggle : info.getToggles()) {
+                if(((RadioButton) toggle).getText().equals(preference.get("selected"))) {
+                    info.selectToggle(toggle);
+                }
+            }
+            streetBox.setValue(preference.get("street_id"));
+            citiesBox.setValue(preference.get("graph_info"));
+            setGraphContents();
+        }
+    }
+    
+    public void savePreference() {
+        parentController.savePreference(PreferenceType.COMBINED, getOptions());
     }
     
     @Override
