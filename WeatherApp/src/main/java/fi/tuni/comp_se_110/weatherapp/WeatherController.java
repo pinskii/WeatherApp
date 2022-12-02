@@ -64,7 +64,7 @@ public class WeatherController {
             
         if(location.isEmpty() || localDate == null) {
             if(location.isEmpty() && localDate == null){
-                // alert about no location
+                // alert about both missing
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Choose a location and a date!");
@@ -77,7 +77,7 @@ public class WeatherController {
                 alert.setHeaderText("Choose a date!");
                 alert.showAndWait();
             } else if(location.isEmpty()) {
-                // alert about both missing
+                // alert about no location
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Type a location!");
@@ -100,7 +100,12 @@ public class WeatherController {
             try {
                 tempChart.getChildren().clear();
                 LineChart lineChart = WeatherModel.drawGraph(selectedValue, location, localDate);
-                tempChart.getChildren().add(lineChart);
+                if(lineChart == null) {
+                    Label infoMessage = new Label("No data found with selected location!"); 
+                        tempChart.getChildren().add(infoMessage);
+                    } else{
+                        tempChart.getChildren().add(lineChart);
+                    }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

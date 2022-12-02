@@ -118,39 +118,84 @@ public class RoadConditionController implements Initializable{
         if (getCoordinates() != null) {
             coords = getCoordinates();
             RadioButton selectedRadioButton = (RadioButton) road.getSelectedToggle();
-            String selectedValue = selectedRadioButton.getText();
+            
+            if(selectedRadioButton == null) {
+                // alert to choose radiobutton
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Choose a radiobutton!");
+                alert.showAndWait();
+            } else {
+                String selectedValue = selectedRadioButton.getText();
 
-            if (selectedValue.equals("maintenance")) {
-                LocalDate date = sctDayDatePicker.getValue();
+                if (selectedValue.equals("maintenance")) {
+                    LocalDate date = sctDayDatePicker.getValue();
+                    
+                    if(date == null) {
+                        // alert to choose a date
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Choose a date!");
+                        alert.showAndWait();
+                    } else {
 
-                try {
-                    chart.getChildren().clear();
-                    BarChart barChart = RoadConditionModel.drawBars(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
-                    if(barChart == null) {
-                        Label infoMessage = new Label("No maintenance tasks in your selected area /"
-                                + " on your selected date!"); 
-                        chart.getChildren().add(infoMessage);
-                    } else{
-                        chart.getChildren().add(barChart);
+                        try {
+                            chart.getChildren().clear();
+                            BarChart barChart = RoadConditionModel.drawBars(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
+                            if(barChart == null) {
+                                Label infoMessage = new Label("No maintenance tasks in your selected area /"
+                                        + " on your selected date!"); 
+                                chart.getChildren().add(infoMessage);
+                            } else{
+                                chart.getChildren().add(barChart);
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
 
-            } else if (selectedValue.equals("road condition forecast")) {
-                String info = infoOptsBox.getValue();
-                String id = streetBox.getValue();
-
-                try {
-                    chart.getChildren().clear();
-                    LineChart lineChart = RoadConditionModel.drawChart(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id, info);
-                    lineChart.setTitle("Road condition forecast for the next 12h");
-                    chart.getChildren().add(lineChart);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } else if (selectedValue.equals("road condition forecast")) {
+                    String info = infoOptsBox.getValue();
+                    String id = streetBox.getValue();
+                    
+                    if(info==null && id==null){
+                        // alert about both missing
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Choose a street ID and the info to show on graph!");
+                        alert.showAndWait();
+                    }
+                    else if(info==null) {
+                        // alert about no info
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Choose the info to show on graph!");
+                        alert.showAndWait();
+                    } else if(id==null) {
+                        // alert about no street id
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Choose a street ID!");
+                        alert.showAndWait();
+                    } else {
+                        try {
+                            chart.getChildren().clear();
+                            LineChart lineChart = RoadConditionModel.drawChart(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id, info);
+                            lineChart.setTitle("Road condition forecast for the next 12h");
+                            chart.getChildren().add(lineChart);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
                 }
             }
-        }  
+        } else {
+            // alert to choose all the necessary info
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Choose all the needed info!");
+            alert.showAndWait();
+        } 
     }
     
     public void showTrafficMessages(ActionEvent e) {
@@ -163,6 +208,12 @@ public class RoadConditionController implements Initializable{
             } else {
                 trafficMessage.setText("");
             }
+        } else {
+            // alert about wrong coordinates
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Check coordinates!");
+            alert.showAndWait();
         }
     }
     

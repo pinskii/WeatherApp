@@ -72,6 +72,12 @@ public class WeatherModel {
                 radioButtonSelection.equals("wind") ||
                 radioButtonSelection.equals("cloudiness")) {
             datapoints = fetchWeatherData(location, date);
+            
+            if(datapoints.isEmpty()) {
+                lineChart = null;
+                return lineChart;
+            }
+            
             int now_hour = LocalDateTime.now().getHour();
             int now_date = LocalDateTime.now().getDayOfMonth();
 
@@ -83,7 +89,7 @@ public class WeatherModel {
                     data.add(datapoints.get(i));
                 }
             }
-
+            
             for(int i = 0 ; i < 12 ; i++) {
                 String timeAsString = data.get(i).getDateTime().format(formatter1);
                 dates.add(timeAsString);
@@ -126,6 +132,12 @@ public class WeatherModel {
         if(radioButtonSelection.equals("daily min and max") || 
                 radioButtonSelection.equals("daily average")) {
             monthlyDatapoints = fetchMonthlyData(location, date);
+            
+            if(monthlyDatapoints.isEmpty()) {
+                lineChart = null;
+                return lineChart;
+            }
+            
             if (radioButtonSelection.equals("daily min and max")) {
                 XYChart.Series series1 = new XYChart.Series();
                 XYChart.Series series2 = new XYChart.Series();
