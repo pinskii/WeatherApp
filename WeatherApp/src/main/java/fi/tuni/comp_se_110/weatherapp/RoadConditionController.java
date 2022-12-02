@@ -1,7 +1,6 @@
 
 package fi.tuni.comp_se_110.weatherapp;
 
-import java.util.HashMap;
 import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
@@ -90,10 +89,10 @@ public class RoadConditionController implements Initializable{
         ArrayList<Double> coords = new ArrayList<>();
         if(!xMinVal.getText().isEmpty() && !xMaxVal.getText().isEmpty() 
             && !yMinVal.getText().isEmpty() && !yMaxVal.getText().isEmpty()
-            && xMinVal.getText().matches("\\d+") 
-            && xMaxVal.getText().matches("\\d+")
-            && yMinVal.getText().matches("\\d+") 
-            && yMaxVal.getText().matches("\\d+")) {
+            && xMinVal.getText().matches("\\d+(\\.\\d+)?") 
+            && xMaxVal.getText().matches("\\d+(\\.\\d+)?")
+            && yMinVal.getText().matches("\\d+(\\.\\d+)?") 
+            && yMaxVal.getText().matches("\\d+(\\.\\d+)?")) {
             
             double xmin = Double.parseDouble(xMinVal.getText());
             double xmax = Double.parseDouble(xMaxVal.getText());
@@ -104,8 +103,8 @@ public class RoadConditionController implements Initializable{
                 if ((xmin >= 20 && xmin <= 32) && (xmax >= 20 && xmax <= 32) && 
                     (ymin >= 59 && ymin <= 72) && (ymax >= 59 && ymax <= 72)) {
                     coords.add(xmin);
-                    coords.add(xmax);
                     coords.add(ymin);
+                    coords.add(xmax);
                     coords.add(ymax);
                     return coords;
                 }
@@ -127,7 +126,13 @@ public class RoadConditionController implements Initializable{
                 try {
                     chart.getChildren().clear();
                     BarChart barChart = RoadConditionModel.drawBars(date, coords.get(0), coords.get(1), coords.get(2), coords.get(3));
-                    chart.getChildren().add(barChart);
+                    if(barChart == null) {
+                        Label infoMessage = new Label("No maintenance tasks in your selected area /"
+                                + " on your selected date!"); 
+                        chart.getChildren().add(infoMessage);
+                    } else{
+                        chart.getChildren().add(barChart);
+                    }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -139,6 +144,7 @@ public class RoadConditionController implements Initializable{
                 try {
                     chart.getChildren().clear();
                     LineChart lineChart = RoadConditionModel.drawChart(coords.get(0), coords.get(1), coords.get(2), coords.get(3), id, info);
+                    lineChart.setTitle("Road condition forecast for the next 12h");
                     chart.getChildren().add(lineChart);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -158,25 +164,32 @@ public class RoadConditionController implements Initializable{
                 trafficMessage.setText("");
             }
         }
-
-        
     }
     
     public void setStreetIDOptions(ActionEvent e) {
         ArrayList<Double> coords = null;
         if (getCoordinates() != null) {
+            streets.clear();
+            streetBox.getItems().clear();
+            
             coords = getCoordinates();
-            System.out.println(coords);
+
             roadConditionData = DigiTrafficApi.getRoadConditionsForecast(coords.get(0), coords.get(1), coords.get(2), coords.get(3));
             for (Map.Entry<String, ArrayList<RoadConditionForecastPoint>> set :
                 roadConditionData.entrySet()) {
-
                 streets.add(set.getKey());
             }
-            System.out.println(streets);
-            streetIDs = FXCollections.observableArrayList(streets);
-            System.out.println(streetIDs);
-            streetBox.setItems(streetIDs);
+            
+            if(streets.isEmpty()) {
+                // alert to use wider coordinates
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Choose a wider coordinate area!");
+                alert.showAndWait();
+            } else {
+                streetIDs = FXCollections.observableArrayList(streets);
+                streetBox.setItems(streetIDs);
+            }
         }
         else {
             // alert about wrong coordinates

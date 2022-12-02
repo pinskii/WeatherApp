@@ -53,7 +53,6 @@ public class App extends Application {
         }
     }
     private void loadPreferences() {
-        System.out.println("Preference file load started");
         String content = null;
         File file = new File("preferences.json");
         try {
