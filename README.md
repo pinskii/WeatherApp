@@ -1,5 +1,6 @@
 This is coursework for Tampere University course Software Design. The work was done in a group of four. My focus was mostly on the controllers.
-
+--------------------------------------------------------------
+The original Readme:
 
 - Prototype.fig: Figma file, a prototype for the user interface 
 
