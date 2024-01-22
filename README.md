@@ -1,3 +1,6 @@
+This is coursework for Tampere University course Software Design. The work was done in a group of four. My focus was mostly on the controllers.
+
+
 - Prototype.fig: Figma file, a prototype for the user interface 
 
 - COMP.SE.100_design_document: Design document which describes the overall structure of our project 
@@ -9,7 +12,7 @@
 
 - WeatherApp is the application itself 
 
-Apache NetBeans IDE is recommended to run this application since it what we use but it might also work with other Java IDEs. To run the program open the WeatherApp project in NetBeans and run it. Link to the design document: https://course-gitlab.tuni.fi/comp-se-110-software-design_2022-2023/matti-pinja-melina-and-someone/-/blob/main/COMP.SE.100_design_document.pdf
+Apache NetBeans IDE is recommended to run this application since it what we use but it might also work with other Java IDEs. To run the program open the WeatherApp project in NetBeans and run it.
 
 The class diagram png and drawio files are included because it could be hard to read ftom a screenshot without zooming. They are marked with the final_submission tag.
 
